@@ -16,8 +16,10 @@ public class MusicPlayer {
     }
 
     public static void main(String[] args) throws Exception {
-        try {         
-            Controller musicPlayer = new Controller();
+        try {
+            View GUI = new View();
+            Model playlist = new Model();
+            Controller musicPlayer = new Controller(GUI, playlist);
 
             System.out.println("======================");
             System.out.println("Loading songs...");
@@ -25,7 +27,7 @@ public class MusicPlayer {
 
             displayMenu();
             int index = getIndex();
-
+            
             switch (index) {
                 case 1: musicPlayer.printPlaylist(); break;
                 case 2: break;
@@ -39,8 +41,6 @@ public class MusicPlayer {
                 break;
                 default: break;
             }
-
-            musicPlayer.initializePlayer(0);
 
             musicPlayer.start();
 
@@ -58,7 +58,7 @@ public class MusicPlayer {
                     }
                     if (st.equals("stop")) {
                         musicPlayer.endPlayer();
-                        System.exit(1);
+                        System.exit(0);
                     }
                 }
 
@@ -69,6 +69,7 @@ public class MusicPlayer {
                 st = s.nextLine();
                 if (st.equals("stop")) {
                     musicPlayer.stopCurrentSong();
+                    System.exit(0);
                 }
             }
         } catch (CannotRealizeException e) {
