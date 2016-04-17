@@ -8,7 +8,7 @@ import java.util.*;
  */
 class Controller {
     private Player player;
-    Model playlist;
+    private Model playlist;
     private int currentSongIndex;
     private int numberOfSongsLeft;
     
@@ -31,6 +31,7 @@ class Controller {
 
     public void start() {
         player.start();
+        printCurrentSong();
         numberOfSongsLeft--;
     }
 
@@ -56,6 +57,7 @@ class Controller {
             File song = new File(playlist.get(currentSongIndex + 1));
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             player.start();
+            printCurrentSong();
             currentSongIndex++;
             numberOfSongsLeft--;
         } else {
@@ -63,6 +65,10 @@ class Controller {
             numberOfSongsLeft--;
             System.out.println("No more songs to play.");
         }
+    }
+    
+    public void printCurrentSong() {
+        System.out.println("playing : " + playlist.get(currentSongIndex));
     }
     
     public void printPlaylist() {
