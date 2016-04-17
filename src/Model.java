@@ -1,4 +1,10 @@
 import java.util.ArrayList;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+
 // https://nipponsei.minglong.org/index.php?section=Tracker&search=Gintama
 public class Model {
     private ArrayList<String> playlist;
@@ -7,12 +13,18 @@ public class Model {
         playlist = new ArrayList<String>();
     }
     
-    public void loadSongs() {
-        playlist.add("music/BnHA_op1.wav");
-        playlist.add("music/G_S2_ed3.wav");
-        playlist.add("music/G_S2_ed5.wav");
-        playlist.add("music/G_S2_op2.wav");
-        playlist.add("music/G_S2_op4.wav");   
+    public void loadSongs(File fin) throws IOException {
+        FileInputStream fis = new FileInputStream(fin);
+        
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+        
+        String line = null;
+        
+        while ((line = br.readLine()) != null) {
+            playlist.add(line);
+        }
+        
+        br.close();
     }
     
     public void add(String fileName) {
@@ -31,5 +43,9 @@ public class Model {
         for (String songName : playlist) {
             System.out.println("Song name: " + songName);
         }
+    }
+    
+    public void remove(int index) {
+        playlist.remove(index);
     }
 }

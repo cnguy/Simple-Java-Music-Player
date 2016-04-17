@@ -10,10 +10,13 @@ class Controller {
     private Player player;
     Model playlist;
     private int currentSongIndex;
-
-    public Controller() {
+    private int numberOfSongsLeft;
+    
+    public Controller() throws IOException {
         playlist = new Model();
-        playlist.loadSongs();
+        File file = new File("playlist.txt");
+        playlist.loadSongs(file);
+        numberOfSongsLeft = playlist.getCount();
     }
 
     public void initializePlayer(int index) throws Exception {
@@ -28,6 +31,7 @@ class Controller {
 
     public void start() {
         player.start();
+        numberOfSongsLeft--;
     }
 
     public void stopCurrentSong() {
@@ -53,15 +57,27 @@ class Controller {
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             player.start();
             currentSongIndex++;
+            numberOfSongsLeft--;
         } else {
             player.stop();
+            numberOfSongsLeft--;
             System.out.println("No more songs to play.");
         }
     }
     
     public void printPlaylist() {
         System.out.println("List of songs: ");
+        System.out.println("======");
         playlist.printAll();
         System.out.println("======");
+    }
+    
+    public void removeSong(int index) {
+        playlist.remove(index);
+        numberOfSongsLeft--;
+    }
+    
+    public int getNumberOfSongsLeft() {
+        return numberOfSongsLeft;
     }
 }

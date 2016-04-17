@@ -7,14 +7,14 @@ public class MusicPlayer {
         System.out.println("2. Add a song to the playlist.");
         System.out.println("3. Remove a song from the playlist.");
     }
-    
+
     public static int getIndex() {
         int index;
         Scanner s = new Scanner(System.in);
         index = s.nextInt();
         return index;
     }
-    
+
     public static void main(String[] args) throws Exception {
         try {         
             Controller musicPlayer = new Controller();
@@ -22,25 +22,29 @@ public class MusicPlayer {
             System.out.println("======================");
             System.out.println("Loading songs...");
             System.out.println("======================");
-            
+
             displayMenu();
             int index = getIndex();
-            
+
             switch (index) {
                 case 1: musicPlayer.printPlaylist(); break;
                 case 2: break;
-                case 3: break;
+                case 3: musicPlayer.printPlaylist();
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Song index to be removed: ");
+                int indexOfSong = scanner.nextInt();
+                musicPlayer.removeSong(--indexOfSong);
+                System.out.println("removed.");
+                musicPlayer.printPlaylist();
+                break;
                 default: break;
             }
-            
+
             musicPlayer.initializePlayer(0);
 
-            int numberOfSongsLeft = 5;
-
             musicPlayer.start();
-            numberOfSongsLeft--;
 
-            System.out.println("Number of songs left: " + numberOfSongsLeft);
+            System.out.println("Number of songs left: " + musicPlayer.getNumberOfSongsLeft());
 
             Scanner s = new Scanner(System.in);
             String st;
@@ -48,7 +52,7 @@ public class MusicPlayer {
             while (!musicPlayer.areThereNoMoreSongs()) {
                 st = s.nextLine();
 
-                if (numberOfSongsLeft > 0) {
+                if (musicPlayer.getNumberOfSongsLeft() > 0) {
                     if (st.equals("skip")) {
                         musicPlayer.skip();
                     }
@@ -58,14 +62,14 @@ public class MusicPlayer {
                     }
                 }
 
-                if (numberOfSongsLeft == 0) {
-                    if (st.equals("stop")) {
-                        musicPlayer.stopCurrentSong();
-                    }
+                System.out.println("Number of songs left: " + musicPlayer.getNumberOfSongsLeft());
+            }
+            
+            if (musicPlayer.getNumberOfSongsLeft() == 0) {
+                st = s.nextLine();
+                if (st.equals("stop")) {
+                    musicPlayer.stopCurrentSong();
                 }
-
-                numberOfSongsLeft--;
-                System.out.println("Number of songs left: " + numberOfSongsLeft);
             }
         } catch (CannotRealizeException e) {
             System.out.println("Unable to read file.");
