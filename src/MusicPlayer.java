@@ -17,9 +17,7 @@ public class MusicPlayer {
 
     public static void main(String[] args) throws Exception {
         try {
-            View GUI = new View();
-            Model playlist = new Model();
-            Controller musicPlayer = new Controller(GUI, playlist);
+            Controller musicPlayer = new Controller();
 
             System.out.println("======================");
             System.out.println("Loading songs...");

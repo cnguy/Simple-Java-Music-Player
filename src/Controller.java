@@ -16,9 +16,10 @@ class Controller implements ActionListener {
     private int currentSongIndex;
     private int numberOfSongsLeft;
 
-    public Controller(View GUI, Model playlist) throws Exception {
-        this.playlist = playlist;
-        this.GUI = GUI;
+    public Controller() throws Exception {
+        this.playlist = new Model();
+        this.GUI = new View();
+        
         addActionListeners();
         File file = new File("playlist.txt");
         playlist.loadSongs(file);
@@ -70,8 +71,9 @@ class Controller implements ActionListener {
             System.out.println("Can't go back further.");
         }
     }
+    
     public void skip() throws Exception {
-        if (currentSongIndex < playlist.getCount()) {
+        if (currentSongIndex < playlist.getCount() - 1) {
             player.stop();
             File song = new File(playlist.get(++currentSongIndex));
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -79,8 +81,6 @@ class Controller implements ActionListener {
             printCurrentSong();
             numberOfSongsLeft--;
         } else {
-            player.stop();
-            numberOfSongsLeft--;
             System.out.println("No more songs to play.");
         }
     }
@@ -117,7 +117,9 @@ class Controller implements ActionListener {
             System.out.println("back");
             try {
                 back();
-            } catch (Exception ex) {}
+            } catch (Exception ex) {
+                System.out.println("too far left");
+            }
         }
         if ((((JButton) e.getSource()) == GUI.playButton)) {
             System.out.println("play");
@@ -127,7 +129,9 @@ class Controller implements ActionListener {
             System.out.println("skip");
             try {
                 skip();
-            } catch (Exception ex) {}
+            } catch (Exception ex) {
+                System.out.println("too far right");
+            }
         }
     }
 }

@@ -26,17 +26,21 @@ public class View extends JFrame {
         panel.setLayout(grid);        
         panel.setPreferredSize(new Dimension(300, 100));
 
-        backButton = new JButton("B");
-        backButton.getPreferredSize();
-        playButton = new JButton("P");
-        playButton.getPreferredSize();
-        skipButton = new JButton("S");
-        skipButton.getPreferredSize();
+        initializeButtons();
         
         panel.add(backButton);
         panel.add(playButton);
         panel.add(skipButton);
         
         pane.add(panel);
+    }
+    
+    public void initializeButtons() {
+        backButton = new JButton("B");
+        backButton.getPreferredSize();
+        playButton = new JButton("P");
+        playButton.getPreferredSize();
+        skipButton = new JButton("S");
+        skipButton.getPreferredSize();
     }
 }
