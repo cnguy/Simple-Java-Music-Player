@@ -29,20 +29,20 @@ class Controller implements ActionListener {
         isItPlaying = false;
     }
 
-    public void initializePlayer(int index) throws Exception {
+    private void initializePlayer(int index) throws Exception {
         File song = new File(playlist.get(index));
         player = Manager.createRealizedPlayer(song.toURI().toURL());
         currentSongIndex = index;
     }
     
-    public void start() {
+    private void start() {
         player.start();
         GUI.setTitle(playlist.get(currentSongIndex));
         // GUI.currentlyPlaying.setText(playlist.get(currentSongIndex));
         numberOfSongsLeft--;
     }
 
-    public void stopCurrentSong() {
+    private void stopCurrentSong() {
         player.stop();
     }
 
@@ -54,11 +54,11 @@ class Controller implements ActionListener {
         }
     }
 
-    public void endPlayer() {
+    private void endPlayer() {
         player = null;
     }
 
-    public void back() throws Exception {
+    private void back() throws Exception {
         if (currentSongIndex > 0) {
             stopCurrentSong();
             File song = new File(playlist.get(--currentSongIndex));
@@ -70,7 +70,7 @@ class Controller implements ActionListener {
         }
     }
 
-    public void skip() throws Exception {
+    private void skip() throws Exception {
         if (currentSongIndex < playlist.getCount() - 1) {
             stopCurrentSong();
             File song = new File(playlist.get(++currentSongIndex));
