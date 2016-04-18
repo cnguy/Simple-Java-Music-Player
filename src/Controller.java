@@ -34,7 +34,7 @@ class Controller implements ActionListener {
         player = Manager.createRealizedPlayer(song.toURI().toURL());
         currentSongIndex = index;
     }
-    
+
     private void start() {
         player.start();
         GUI.setTitle(playlist.get(currentSongIndex));
@@ -111,13 +111,24 @@ class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((((JButton) e.getSource()) == GUI.backButton)) {
-            try {
-                back();
-            } catch (Exception ex) {
-                System.out.println("too far left");
+            if (!isItPlaying) {
+                try {
+                    back();
+                } catch (Exception ex) {
+                    System.out.println("too far left");
+                }
+
+                try {
+                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(img));
+                } catch (IOException ex) {
+                    System.out.println("icons/pause.png not found");
+                }
+
+                isItPlaying = true;
             }
         }
-        
+
         if ((((JButton) e.getSource()) == GUI.playButton)) {
             if (!isItPlaying) {
                 start();
@@ -128,27 +139,38 @@ class Controller implements ActionListener {
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
-                
+
                 isItPlaying = true;
             } else {
                 stopCurrentSong();
-                
+
                 try {
                     Image img = ImageIO.read(getClass().getResource("icons/play.png"));
                     GUI.playButton.setIcon(new ImageIcon(img));
                 } catch (IOException ex) {
                     System.out.println("icons/play.png not found");
                 }
-                
+
                 isItPlaying = false;
             }
         }
-        
+
         if ((((JButton) e.getSource()) == GUI.skipButton)) {
-            try {
-                skip();
-            } catch (Exception ex) {
-                System.out.println("too far right");
+            if (!isItPlaying) {
+                try {
+                    skip();
+                } catch (Exception ex) {
+                    System.out.println("too far right");
+                }
+                
+                try {
+                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(img));
+                } catch (IOException ex) {
+                    System.out.println("icons/pause.png not found");
+                }
+                
+                isItPlaying = true;
             }
         }
     }
