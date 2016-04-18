@@ -37,7 +37,8 @@ class Controller implements ActionListener {
     
     public void start() {
         player.start();
-        printCurrentSong();
+        GUI.setTitle(playlist.get(currentSongIndex));
+        // GUI.currentlyPlaying.setText(playlist.get(currentSongIndex));
         numberOfSongsLeft--;
     }
 
@@ -59,11 +60,10 @@ class Controller implements ActionListener {
 
     public void back() throws Exception {
         if (currentSongIndex > 0) {
-            player.stop();
+            stopCurrentSong();
             File song = new File(playlist.get(--currentSongIndex));
             player = Manager.createRealizedPlayer(song.toURI().toURL());
-            player.start();
-            printCurrentSong();
+            start();
             numberOfSongsLeft++;
         } else {
             System.out.println("Can't go back further.");
@@ -72,11 +72,10 @@ class Controller implements ActionListener {
 
     public void skip() throws Exception {
         if (currentSongIndex < playlist.getCount() - 1) {
-            player.stop();
+            stopCurrentSong();
             File song = new File(playlist.get(++currentSongIndex));
             player = Manager.createRealizedPlayer(song.toURI().toURL());
-            player.start();
-            printCurrentSong();
+            start();
             numberOfSongsLeft--;
         } else {
             System.out.println("No more songs to play.");

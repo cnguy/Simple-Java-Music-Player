@@ -9,10 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class View extends JFrame {
     private GridLayout grid = new GridLayout(0, 3);
     JButton backButton, playButton, skipButton;
+    // JLabel currentlyPlaying;
     
     public View() {
         super("music player");
@@ -36,10 +38,11 @@ public class View extends JFrame {
         panel.add(backButton);
         panel.add(playButton);
         panel.add(skipButton);
-        
+        // currentlyPlaying = new JLabel();
+        // panel.add(currentlyPlaying);
         pane.add(panel);
     }
-    
+        
     private void initializeButtons() {      
         backButton = new JButton();
         addIcon(backButton, "icons/prev.png");
