@@ -5,26 +5,28 @@ import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
-/**
- * Controller Class.
- */
 class Controller implements ActionListener {
     private Player player;
     private Model playlist;
     private View GUI;
     private int currentSongIndex;
     private int numberOfSongsLeft;
+    private boolean isItPlaying;        // flag to change play icon to pause and vice versa
 
     public Controller() throws Exception {
         this.playlist = new Model();
         this.GUI = new View();
-        
+
         addActionListeners();
         File file = new File("playlist.txt");
         playlist.loadSongs(file);
         numberOfSongsLeft = playlist.getCount();
         initializePlayer(0);
+        isItPlaying = false;
     }
 
     public void initializePlayer(int index) throws Exception {
@@ -32,11 +34,7 @@ class Controller implements ActionListener {
         player = Manager.createRealizedPlayer(song.toURI().toURL());
         currentSongIndex = index;
     }
-
-    public Player getPlayer() {
-        return player;
-    }
-
+    
     public void start() {
         player.start();
         printCurrentSong();
@@ -58,7 +56,7 @@ class Controller implements ActionListener {
     public void endPlayer() {
         player = null;
     }
-    
+
     public void back() throws Exception {
         if (currentSongIndex > 0) {
             player.stop();
@@ -71,7 +69,7 @@ class Controller implements ActionListener {
             System.out.println("Can't go back further.");
         }
     }
-    
+
     public void skip() throws Exception {
         if (currentSongIndex < playlist.getCount() - 1) {
             player.stop();
@@ -114,19 +112,40 @@ class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((((JButton) e.getSource()) == GUI.backButton)) {
-            System.out.println("back");
             try {
                 back();
             } catch (Exception ex) {
                 System.out.println("too far left");
             }
         }
+        
         if ((((JButton) e.getSource()) == GUI.playButton)) {
-            System.out.println("play");
-            start();
+            if (!isItPlaying) {
+                start();
+
+                try {
+                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(img));
+                } catch (IOException ex) {
+                    System.out.println("icons/pause.png not found");
+                }
+                
+                isItPlaying = true;
+            } else {
+                stopCurrentSong();
+                
+                try {
+                    Image img = ImageIO.read(getClass().getResource("icons/play.png"));
+                    GUI.playButton.setIcon(new ImageIcon(img));
+                } catch (IOException ex) {
+                    System.out.println("icons/play.png not found");
+                }
+                
+                isItPlaying = false;
+            }
         }
+        
         if ((((JButton) e.getSource()) == GUI.skipButton)) {
-            System.out.println("skip");
             try {
                 skip();
             } catch (Exception ex) {
