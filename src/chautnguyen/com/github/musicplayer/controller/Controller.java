@@ -20,8 +20,8 @@ public class Controller implements ActionListener {
     private Player player;
     private Model playlist;
     private View GUI;
+    
     private int currentSongIndex;
-    private int numberOfSongsLeft;
     private boolean isItPlaying;        // flag to change play icon to pause and vice versa
 
     public Controller() throws Exception {
@@ -34,7 +34,6 @@ public class Controller implements ActionListener {
         File file = new File(path.getFile());
         playlist.loadSongs(file);
 
-        numberOfSongsLeft = playlist.getCount();
         initializePlayer(0);
         isItPlaying = false;
     }
@@ -48,25 +47,12 @@ public class Controller implements ActionListener {
     private void start() {
         player.start();
         GUI.setTitle(playlist.get(currentSongIndex));
-        numberOfSongsLeft--;
     }
 
     private void stopCurrentSong() {
         player.stop();
     }
-
-    public boolean areThereNoMoreSongs() {
-        if (currentSongIndex == playlist.getCount() - 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void endPlayer() {
-        player = null;
-    }
-
+    
     // must clean up this class heavily
     private void back() throws Exception {
         if (!isItPlaying && currentSongIndex == 1) { // currentSongIndex hasn't been incremented, need to add one for correct logic
@@ -80,8 +66,7 @@ public class Controller implements ActionListener {
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
-            numberOfSongsLeft++; // currentSongIndex == the front of the ArrayList
-        } else {
+        } else { // currentSongIndex == the front of the ArrayList
             resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
@@ -105,7 +90,6 @@ public class Controller implements ActionListener {
             // File song = new File(playlist.get(++currentSongIndex)); this will NOT work. must use the getResource function to return a file
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
-            numberOfSongsLeft--;
         } else { // currentSongIndex == the end of the ArrayList
             resetIcons();
             try {
@@ -126,16 +110,7 @@ public class Controller implements ActionListener {
         System.out.println("======");
         playlist.printAll();
         System.out.println("======");
-    }
-
-    public void removeSong(int index) {
-        playlist.remove(index);
-        numberOfSongsLeft--;
-    }
-
-    public int getNumberOfSongsLeft() {
-        return numberOfSongsLeft;
-    }
+    }    
 
     private void addActionListeners() {
         GUI.backButton.addActionListener(this);
@@ -159,7 +134,6 @@ public class Controller implements ActionListener {
                 } catch (IOException ex) {
                     System.out.println("icons/prev.png not found");
                 }
-
                 isItPlaying = true;
             }
         }
@@ -175,7 +149,6 @@ public class Controller implements ActionListener {
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
-
                 isItPlaying = true;
             } else {
                 resetIcons();
@@ -187,7 +160,6 @@ public class Controller implements ActionListener {
                 } catch (IOException ex) {
                     System.out.println("icons/play.png not found");
                 }
-
                 isItPlaying = false;
             }
         }
@@ -206,7 +178,6 @@ public class Controller implements ActionListener {
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
-
                 isItPlaying = true;
             }
         }
