@@ -70,6 +70,7 @@ public class Controller implements ActionListener {
     // must clean up this class heavily
     private void back() throws Exception {
         if (!isItPlaying && currentSongIndex == 1) { // currentSongIndex hasn't been incremented, need to add one for correct logic
+            // this block makes it so when the user backs while the player's paused, the UI stays the same
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             GUI.setTitle(playlist.get(currentSongIndex));
@@ -79,7 +80,7 @@ public class Controller implements ActionListener {
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
-            numberOfSongsLeft++;
+            numberOfSongsLeft++; // currentSongIndex == the front of the ArrayList
         } else {
             resetIcons();
             try {
@@ -93,6 +94,7 @@ public class Controller implements ActionListener {
 
     private void skip() throws Exception {
         if (!isItPlaying && currentSongIndex == playlist.getCount() - 2) { // currentSongIndex hasn't been incremented, need to subtract one for correct logic
+            // this block makes it so when the user skips while the player's paused, the UI stays the same
             File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             GUI.setTitle(playlist.get(currentSongIndex));
@@ -104,7 +106,7 @@ public class Controller implements ActionListener {
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
             numberOfSongsLeft--;
-        } else {
+        } else { // currentSongIndex == the end of the ArrayList
             resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
