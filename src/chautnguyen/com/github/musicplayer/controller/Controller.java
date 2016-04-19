@@ -126,16 +126,6 @@ public class Controller implements ActionListener {
             } catch (Exception ex) {
                 // need exception
             }
-
-            if (isItPlaying) {
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
-                }
-                isItPlaying = true;
-            }
         }
 
         if ((((JButton) e.getSource()) == GUI.playButton)) {
@@ -169,16 +159,6 @@ public class Controller implements ActionListener {
                 skip();
             } catch (Exception ex) {
                 // need exception
-            }
-
-            if (isItPlaying) {
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
-                }
-                isItPlaying = true;
             }
         }
     }
