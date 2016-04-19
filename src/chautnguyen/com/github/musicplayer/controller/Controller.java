@@ -56,8 +56,6 @@ public class Controller implements ActionListener {
     // must clean up this class heavily
     private void back() throws Exception {
         if (currentSongIndex == 0) {
-            // this block makes it so when the user backs while the player's paused, the UI stays the same
-            resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
                 GUI.backButton.setIcon(new ImageIcon(icon));
@@ -65,7 +63,6 @@ public class Controller implements ActionListener {
                 System.out.println("icons/error.png not found");
             }            
         } else if (!isItPlaying && currentSongIndex > 0) {
-            resetIcons();
             stopCurrentSong();          
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -78,7 +75,6 @@ public class Controller implements ActionListener {
                 System.out.println("icons/pause.png not found");
             }
         } else {
-            resetIcons();
             stopCurrentSong();          
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -88,7 +84,6 @@ public class Controller implements ActionListener {
 
     private void skip() throws Exception {
         if (currentSongIndex >= playlist.getCount() - 2) {
-            resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
                 GUI.skipButton.setIcon(new ImageIcon(icon));
@@ -96,7 +91,6 @@ public class Controller implements ActionListener {
                 System.out.println("icons/error.png not found");
             }
         } else if (!isItPlaying && currentSongIndex < playlist.getCount() - 1) {
-            resetIcons();
             stopCurrentSong();          
             File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -108,8 +102,7 @@ public class Controller implements ActionListener {
             } catch (IOException ex) {
                 System.out.println("icons/pause.png not found");
             }            
-        } else { // currentSongIndex == the end of the ArrayList
-            resetIcons();
+        } else {
             stopCurrentSong();          
             File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -136,6 +129,8 @@ public class Controller implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        resetIcons();
+        
         if ((((JButton) e.getSource()) == GUI.backButton)) {
             try {
                 back();
@@ -146,27 +141,23 @@ public class Controller implements ActionListener {
 
         if ((((JButton) e.getSource()) == GUI.playButton)) {
             if (!isItPlaying) {
-                resetIcons();
                 start();
-
+                isItPlaying = true;
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
                     GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
-                isItPlaying = true;
             } else {
-                resetIcons();
                 stopCurrentSong();
-
+                isItPlaying = true;
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
                     GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/play.png not found");
                 }
-                isItPlaying = false;
             }
         }
 
@@ -186,7 +177,6 @@ public class Controller implements ActionListener {
         } catch (IOException ex) {
             System.out.println("icons/prev.png not found");
         }
-
         try {
             Image icon = ImageIO.read(View.class.getResource("icons/next.png"));
             GUI.skipButton.setIcon(new ImageIcon(icon));
