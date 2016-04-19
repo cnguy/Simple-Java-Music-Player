@@ -55,7 +55,7 @@ public class Controller implements ActionListener {
     
     // must clean up this class heavily
     private void back() throws Exception {
-        if (!isItPlaying && currentSongIndex == 1) { // currentSongIndex hasn't been incremented, need to add one for correct logic
+        if (!isItPlaying && currentSongIndex > 0) {
             // this block makes it so when the user backs while the player's paused, the UI stays the same
             File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -78,7 +78,7 @@ public class Controller implements ActionListener {
     }
 
     private void skip() throws Exception {
-        if (!isItPlaying && currentSongIndex == playlist.getCount() - 2) { // currentSongIndex hasn't been incremented, need to subtract one for correct logic
+        if (!isItPlaying && currentSongIndex < playlist.getCount() - 1) {
             // this block makes it so when the user skips while the player's paused, the UI stays the same
             File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
@@ -127,12 +127,12 @@ public class Controller implements ActionListener {
                 // need exception
             }
 
-            if (!isItPlaying && currentSongIndex != 0) {
+            if (isItPlaying) {
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
                     GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
-                    System.out.println("icons/prev.png not found");
+                    System.out.println("icons/pause.png not found");
                 }
                 isItPlaying = true;
             }
@@ -171,7 +171,7 @@ public class Controller implements ActionListener {
                 // need exception
             }
 
-            if (!isItPlaying && currentSongIndex != playlist.getCount() - 1) {
+            if (isItPlaying) {
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
                     GUI.playButton.setIcon(new ImageIcon(icon));
