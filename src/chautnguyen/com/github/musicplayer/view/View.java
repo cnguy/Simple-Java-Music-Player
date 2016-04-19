@@ -1,16 +1,17 @@
 package chautnguyen.com.github.musicplayer.view;
 
-import java.awt.GridLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
-import javax.imageio.ImageIO;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class View extends JFrame {

@@ -3,18 +3,19 @@ package chautnguyen.com.github.musicplayer.controller;
 import chautnguyen.com.github.musicplayer.model.Model;
 import chautnguyen.com.github.musicplayer.view.View;
 
-import javax.swing.JButton;
-import javax.media.Player;
-import javax.media.Manager;
-import java.net.URL;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.media.Player;
+import javax.media.Manager;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Controller implements ActionListener {
     private Player player;
@@ -43,7 +44,56 @@ public class Controller implements ActionListener {
         player = Manager.createRealizedPlayer(song.toURI().toURL());
         currentSongIndex = index;
     }
+    
+    private void addActionListeners() {
+        GUI.backButton.addActionListener(this);
+        GUI.playButton.addActionListener(this);
+        GUI.skipButton.addActionListener(this);
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        resetIcons();
+        
+        if ((((JButton) e.getSource()) == GUI.backButton)) {
+            try {
+                back();
+            } catch (Exception ex) {
+                // need exception
+            }
+        }
+
+        if ((((JButton) e.getSource()) == GUI.playButton)) {
+            if (!isItPlaying) {
+                start();
+                isItPlaying = true;
+                try {
+                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
+                } catch (IOException ex) {
+                    System.out.println("icons/pause.png not found");
+                }
+            } else {
+                stopCurrentSong();
+                isItPlaying = true;
+                try {
+                    Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
+                } catch (IOException ex) {
+                    System.out.println("icons/play.png not found");
+                }
+            }
+        }
+
+        if ((((JButton) e.getSource()) == GUI.skipButton)) {
+            try {
+                skip();
+            } catch (Exception ex) {
+                // need exception
+            }
+        }
+    }
+    
     private void start() {
         player.start();
         GUI.setTitle(playlist.get(currentSongIndex));
@@ -107,55 +157,6 @@ public class Controller implements ActionListener {
             File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
-        }
-    }
-
-    private void addActionListeners() {
-        GUI.backButton.addActionListener(this);
-        GUI.playButton.addActionListener(this);
-        GUI.skipButton.addActionListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        resetIcons();
-        
-        if ((((JButton) e.getSource()) == GUI.backButton)) {
-            try {
-                back();
-            } catch (Exception ex) {
-                // need exception
-            }
-        }
-
-        if ((((JButton) e.getSource()) == GUI.playButton)) {
-            if (!isItPlaying) {
-                start();
-                isItPlaying = true;
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
-                }
-            } else {
-                stopCurrentSong();
-                isItPlaying = true;
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/play.png not found");
-                }
-            }
-        }
-
-        if ((((JButton) e.getSource()) == GUI.skipButton)) {
-            try {
-                skip();
-            } catch (Exception ex) {
-                // need exception
-            }
         }
     }
 
