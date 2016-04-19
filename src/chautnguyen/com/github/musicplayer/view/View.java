@@ -1,3 +1,5 @@
+package chautnguyen.com.github.musicplayer.view;
+
 import java.awt.GridLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -13,7 +15,7 @@ import javax.swing.JLabel;
 
 public class View extends JFrame {
     private GridLayout grid = new GridLayout(0, 3);
-    JButton backButton, playButton, skipButton;
+    public JButton backButton, playButton, skipButton;
     // JLabel currentlyPlaying;
     
     public View() {
@@ -59,7 +61,7 @@ public class View extends JFrame {
     
     private void addIcon(JButton button, String iconPath) {
         try {
-            Image icon = ImageIO.read(getClass().getResource(iconPath));
+            Image icon = ImageIO.read(View.class.getResource(iconPath));
             button.setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println(iconPath + " not found.");

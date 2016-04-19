@@ -1,3 +1,5 @@
+package chautnguyen.com.github.musicplayer.model;
+
 import java.util.ArrayList;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -5,11 +7,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 
-// https://nipponsei.minglong.org/index.php?section=Tracker&search=Gintama
 public class Model {
     private ArrayList<String> playlist;
 
-    Model() {
+    public Model() {
         playlist = new ArrayList<String>();
     }
     

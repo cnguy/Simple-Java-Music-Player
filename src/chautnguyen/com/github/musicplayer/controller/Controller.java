@@ -1,3 +1,8 @@
+package chautnguyen.com.github.musicplayer.controller;
+
+import chautnguyen.com.github.musicplayer.model.Model;
+import chautnguyen.com.github.musicplayer.view.View;
+
 import javax.media.*;
 import java.net.*;
 import java.io.*;
@@ -9,7 +14,7 @@ import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-class Controller implements ActionListener {
+public class Controller implements ActionListener {
     private Player player;
     private Model playlist;
     private View GUI;
@@ -22,15 +27,18 @@ class Controller implements ActionListener {
         this.GUI = new View();
 
         addActionListeners();
-        File file = new File("playlist.txt");
+
+        URL path = Controller.class.getResource("playlists/playlist1.txt");
+        File file = new File(path.getFile());
         playlist.loadSongs(file);
+
         numberOfSongsLeft = playlist.getCount();
         initializePlayer(0);
         isItPlaying = false;
     }
 
     private void initializePlayer(int index) throws Exception {
-        File song = new File(playlist.get(index));
+        File song = new File(Model.class.getResource(playlist.get(index)).getFile());
         player = Manager.createRealizedPlayer(song.toURI().toURL());
         currentSongIndex = index;
     }
@@ -38,7 +46,6 @@ class Controller implements ActionListener {
     private void start() {
         player.start();
         GUI.setTitle(playlist.get(currentSongIndex));
-        // GUI.currentlyPlaying.setText(playlist.get(currentSongIndex));
         numberOfSongsLeft--;
     }
 
@@ -60,8 +67,8 @@ class Controller implements ActionListener {
 
     private void back() throws Exception {
         if (currentSongIndex > 0) {
-            stopCurrentSong();
-            File song = new File(playlist.get(--currentSongIndex));
+            stopCurrentSong();          
+            File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
             numberOfSongsLeft++;
@@ -73,7 +80,8 @@ class Controller implements ActionListener {
     private void skip() throws Exception {
         if (currentSongIndex < playlist.getCount() - 1) {
             stopCurrentSong();
-            File song = new File(playlist.get(++currentSongIndex));
+            File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
+            // File song = new File(playlist.get(++currentSongIndex)); this will NOT work. must use the getResource function to return a file
             player = Manager.createRealizedPlayer(song.toURI().toURL());
             start();
             numberOfSongsLeft--;
@@ -111,18 +119,18 @@ class Controller implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((((JButton) e.getSource()) == GUI.backButton)) {
+            try {
+                back();
+            } catch (Exception ex) {
+                System.out.println("too far left");
+            }
+
             if (!isItPlaying) {
                 try {
-                    back();
-                } catch (Exception ex) {
-                    System.out.println("too far left");
-                }
-
-                try {
-                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(img));
+                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
+                    System.out.println("icons/back.png not found");
                 }
 
                 isItPlaying = true;
@@ -132,10 +140,10 @@ class Controller implements ActionListener {
         if ((((JButton) e.getSource()) == GUI.playButton)) {
             if (!isItPlaying) {
                 start();
-
+                
                 try {
-                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(img));
+                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
@@ -143,10 +151,10 @@ class Controller implements ActionListener {
                 isItPlaying = true;
             } else {
                 stopCurrentSong();
-
+                
                 try {
-                    Image img = ImageIO.read(getClass().getResource("icons/play.png"));
-                    GUI.playButton.setIcon(new ImageIcon(img));
+                    Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/play.png not found");
                 }
@@ -156,20 +164,20 @@ class Controller implements ActionListener {
         }
 
         if ((((JButton) e.getSource()) == GUI.skipButton)) {
+            try {
+                skip();
+            } catch (Exception ex) {
+                System.out.println("too far right");
+            }
+
             if (!isItPlaying) {
                 try {
-                    skip();
-                } catch (Exception ex) {
-                    System.out.println("too far right");
-                }
-                
-                try {
-                    Image img = ImageIO.read(getClass().getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(img));
+                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                    GUI.playButton.setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
+                    System.out.println("icons/skip.png not found");
                 }
-                
+
                 isItPlaying = true;
             }
         }

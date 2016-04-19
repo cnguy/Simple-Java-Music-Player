@@ -1,3 +1,7 @@
+package chautnguyen.com.github.musicplayer;
+
+import chautnguyen.com.github.musicplayer.controller.Controller;
+
 import java.util.Scanner;
 import javax.media.CannotRealizeException;
 
