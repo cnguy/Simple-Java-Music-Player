@@ -39,14 +39,4 @@ public class Model {
     public int getCount() {
         return playlist.size();
     }
-    
-    public void printAll() {
-        for (String songName : playlist) {
-            System.out.println("Song name: " + songName);
-        }
-    }
-    
-    public void remove(int index) {
-        playlist.remove(index);
-    }
 }

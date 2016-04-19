@@ -3,6 +3,7 @@ package chautnguyen.com.github.musicplayer.controller;
 import chautnguyen.com.github.musicplayer.model.Model;
 import chautnguyen.com.github.musicplayer.view.View;
 
+import javax.swing.JButton;
 import javax.media.Player;
 import javax.media.Manager;
 import java.net.URL;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
-import javax.swing.JButton;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -109,17 +109,6 @@ public class Controller implements ActionListener {
             start();
         }
     }
-
-    public void printCurrentSong() {
-        System.out.println("playing : " + playlist.get(currentSongIndex));
-    }
-
-    public void printPlaylist() {
-        System.out.println("List of songs: ");
-        System.out.println("======");
-        playlist.printAll();
-        System.out.println("======");
-    }    
 
     private void addActionListeners() {
         GUI.backButton.addActionListener(this);
