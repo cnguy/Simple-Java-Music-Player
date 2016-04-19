@@ -20,7 +20,7 @@ public class Controller implements ActionListener {
     private Player player;
     private Model playlist;
     private View GUI;
-    
+
     private int currentSongIndex;
     private boolean isItPlaying;        // flag to change play icon to pause and vice versa
 
@@ -52,45 +52,42 @@ public class Controller implements ActionListener {
     private void stopCurrentSong() {
         player.stop();
     }
-    
+
     // must clean up this class heavily
     private void back() throws Exception {
-        if (!isItPlaying && currentSongIndex > 0) {
+        if (currentSongIndex == 0) {
             // this block makes it so when the user backs while the player's paused, the UI stays the same
-            File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
-            player = Manager.createRealizedPlayer(song.toURI().toURL());
-            GUI.setTitle(playlist.get(currentSongIndex));
-        } else if (currentSongIndex > 0) {
-            resetIcons();
-            stopCurrentSong();          
-            File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
-            player = Manager.createRealizedPlayer(song.toURI().toURL());
-            start();
-        } else { // currentSongIndex == the front of the ArrayList
             resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
                 GUI.backButton.setIcon(new ImageIcon(icon));
             } catch (IOException ex) {
                 System.out.println("icons/error.png not found");
+            }            
+        } else if (!isItPlaying && currentSongIndex > 0) {
+            resetIcons();
+            stopCurrentSong();          
+            File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
+            player = Manager.createRealizedPlayer(song.toURI().toURL());
+            start();
+            isItPlaying = true;
+            try {
+                Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                GUI.playButton.setIcon(new ImageIcon(icon));
+            } catch (IOException ex) {
+                System.out.println("icons/pause.png not found");
             }
+        } else {
+            resetIcons();
+            stopCurrentSong();          
+            File song = new File(Model.class.getResource(playlist.get(--currentSongIndex)).getFile());
+            player = Manager.createRealizedPlayer(song.toURI().toURL());
+            start();
         }
     }
 
     private void skip() throws Exception {
-        if (!isItPlaying && currentSongIndex < playlist.getCount() - 1) {
-            // this block makes it so when the user skips while the player's paused, the UI stays the same
-            File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
-            player = Manager.createRealizedPlayer(song.toURI().toURL());
-            GUI.setTitle(playlist.get(currentSongIndex));
-        } else if (currentSongIndex < playlist.getCount() - 1) {
-            resetIcons();
-            stopCurrentSong();
-            File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
-            // File song = new File(playlist.get(++currentSongIndex)); this will NOT work. must use the getResource function to return a file
-            player = Manager.createRealizedPlayer(song.toURI().toURL());
-            start();
-        } else { // currentSongIndex == the end of the ArrayList
+        if (currentSongIndex >= playlist.getCount() - 2) {
             resetIcons();
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
@@ -98,6 +95,25 @@ public class Controller implements ActionListener {
             } catch (IOException ex) {
                 System.out.println("icons/error.png not found");
             }
+        } else if (!isItPlaying && currentSongIndex < playlist.getCount() - 1) {
+            resetIcons();
+            stopCurrentSong();          
+            File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
+            player = Manager.createRealizedPlayer(song.toURI().toURL());
+            start();
+            isItPlaying = true;
+            try {
+                Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+                GUI.playButton.setIcon(new ImageIcon(icon));
+            } catch (IOException ex) {
+                System.out.println("icons/pause.png not found");
+            }            
+        } else { // currentSongIndex == the end of the ArrayList
+            resetIcons();
+            stopCurrentSong();          
+            File song = new File(Model.class.getResource(playlist.get(++currentSongIndex)).getFile());
+            player = Manager.createRealizedPlayer(song.toURI().toURL());
+            start();
         }
     }
 
