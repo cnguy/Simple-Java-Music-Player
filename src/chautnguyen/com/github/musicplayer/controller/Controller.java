@@ -57,7 +57,7 @@ public class Controller implements ActionListener {
     
     /**
      * Stops the player, loads the next desired song into the player, and starts the player.
-     * back() and skip() can both call this function. Just need to decrement or increment the currentSongIndex while playing it.
+     * back() and skip() uses this function. Just need to decrement or increment the currentSongIndex while calling this function.
      * 
      * @param index     the index of the song (in the ArrayList) to be loaded.
      */
