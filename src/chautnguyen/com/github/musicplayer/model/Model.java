@@ -32,10 +32,21 @@ public class Model {
         playlist.add(fileName);
     }
     
+    /**
+     * Returns the song at the index within the ArrayList.
+     * 
+     * @param index     the index of the song within the ArrayList.
+     * @return          returns the file path.
+     */
     public String get(int index) {
         return playlist.get(index);
     }
     
+    /**
+     * Returns the size of the ArrayList.
+     * 
+     * @return          returns the size of the ArrayList.
+     */
     public int getCount() {
         return playlist.size();
     }
