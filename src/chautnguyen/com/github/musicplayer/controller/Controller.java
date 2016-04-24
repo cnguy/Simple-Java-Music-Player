@@ -208,12 +208,10 @@ public class Controller implements ActionListener, ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         if (player != null) {
-            float sliderValue = (float)GUI.getVolumeSlider().getValue();
             // jmf keeps catching exceptions despite the fact that volumnLevel is always in [0, 1.0]
             // so instead of dividing sliderValue by 100.0 (so that every slider value corresponds with the appropriate float value (1 = .01)
             // I'm dividing it by 150 (as long as the resulting volumnLevel is not 1.0 or near it)..
-            float volumnLevel = sliderValue / 150.0f;
-            (player.getGainControl()).setLevel(volumnLevel);
+            (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f); // gets slider value, converts it, and sets the level
         }
     }
 }
