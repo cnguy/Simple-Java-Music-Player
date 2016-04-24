@@ -4,7 +4,6 @@ import chautnguyen.com.github.musicplayer.model.Model;
 import chautnguyen.com.github.musicplayer.view.View;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.media.Control;
 import javax.media.GainControl;
 import javax.media.Player;
 import javax.media.Manager;
@@ -131,6 +129,8 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void start() {
         player.start();
+        // the line below is to make sure the next song is muted if the slider's value = 0 from the previous song
+        (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
         GUI.setTitle(playlist.get(currentSongIndex));
     }
 
