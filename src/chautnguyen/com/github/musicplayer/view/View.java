@@ -74,8 +74,6 @@ public class View extends JFrame {
         }
     }
     
-    // private JButton backButton, playButton, skipButton;
-    // private JSlider volumeSlider;
     public JButton getBackButton() {
         return backButton;
     }
