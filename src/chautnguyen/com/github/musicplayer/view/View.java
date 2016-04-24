@@ -10,9 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 public class View extends JFrame {
@@ -37,18 +36,17 @@ public class View extends JFrame {
         panel.setLayout(grid);        
         panel.setPreferredSize(new Dimension(200, 100));
 
-        initializeButtons();
+        initializeComponents();
         
         panel.add(backButton);
         panel.add(skipButton);
-        panel.add(playButton);      
-        
+        panel.add(playButton);
         panel.add(volumeSlider);
         
         pane.add(panel);
     }
         
-    private void initializeButtons() {      
+    private void initializeComponents() {      
         backButton = new JButton();
         addIcon(backButton, "icons/prev.png");
         backButton.getPreferredSize();               
