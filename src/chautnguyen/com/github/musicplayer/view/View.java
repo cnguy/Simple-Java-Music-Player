@@ -13,10 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 
 public class View extends JFrame {
-    private GridLayout grid = new GridLayout(0, 3);
+    private GridLayout grid = new GridLayout(2, 3);
     public JButton backButton, playButton, skipButton;
+    public JSlider volumeSlider;
     
     public View() {
         super("music player");
@@ -33,13 +35,15 @@ public class View extends JFrame {
     private void addComponentsToPane(final Container pane) {
         final JPanel panel = new JPanel();
         panel.setLayout(grid);        
-        panel.setPreferredSize(new Dimension(300, 100));
+        panel.setPreferredSize(new Dimension(200, 100));
 
         initializeButtons();
         
         panel.add(backButton);
-        panel.add(playButton);
         panel.add(skipButton);
+        panel.add(playButton);      
+        
+        panel.add(volumeSlider);
         
         pane.add(panel);
     }
@@ -47,15 +51,14 @@ public class View extends JFrame {
     private void initializeButtons() {      
         backButton = new JButton();
         addIcon(backButton, "icons/prev.png");
-        backButton.getPreferredSize();
-        
-        playButton = new JButton();
-        addIcon(playButton, "icons/play.png"); 
-        playButton.getPreferredSize();
+        backButton.getPreferredSize();               
         
         skipButton = new JButton();
         addIcon(skipButton, "icons/next.png");
         skipButton.getPreferredSize();
+        
+        volumeSlider = new JSlider();
+        volumeSlider.getPreferredSize();
     }
     
     private void addIcon(JButton button, String iconPath) {
