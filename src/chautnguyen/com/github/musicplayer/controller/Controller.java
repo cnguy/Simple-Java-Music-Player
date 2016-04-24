@@ -79,7 +79,7 @@ public class Controller implements ActionListener, ChangeListener {
         GUI.getPlayButton().addActionListener(this);
         GUI.getSkipButton().addActionListener(this);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         resetIcons();
@@ -88,7 +88,7 @@ public class Controller implements ActionListener, ChangeListener {
             try {
                 back();
             } catch (Exception ex) {
-                // need exception
+                System.out.println("error.png not found!");
             }
         }
         // TODO: make it so the pause button becomes a play button
@@ -97,21 +97,11 @@ public class Controller implements ActionListener, ChangeListener {
             if (!isItPlaying) {
                 start();
                 isItPlaying = true;
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                    GUI.getPlayButton().setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/pause.png not found");
-                }
+                setP2P("pause");
             } else {
                 stopCurrentSong();
-                isItPlaying = false; // fixed
-                try {
-                    Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
-                    GUI.getPlayButton().setIcon(new ImageIcon(icon));
-                } catch (IOException ex) {
-                    System.out.println("icons/play.png not found");
-                }
+                isItPlaying = false;
+                setP2P("play");
             }
         }
 
@@ -119,11 +109,11 @@ public class Controller implements ActionListener, ChangeListener {
             try {
                 skip();
             } catch (Exception ex) {
-                // need exception
+                System.out.println("error.png not found!");
             }
         }
     }
-    
+
     /**
      * Starts the player to play the current song, and then sets the title of the music player to music/insertsongnamehere.wav.
      */
@@ -143,27 +133,15 @@ public class Controller implements ActionListener, ChangeListener {
         player.stop();
     }
 
-    // must clean up this class heavily
-
     /**
      * Loads a song with the currentSongIndex (that was just decremented), if it exists, into the player.
      */
     private void back() throws Exception {
         if (currentSongIndex == 0) {    // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
-            try {
-                Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
-                GUI.getBackButton().setIcon(new ImageIcon(icon));
-            } catch (IOException ex) {
-                System.out.println("icons/error.png not found");
-            }            
+            setButtonIconToErrorImage("back");
         } else {    // In any other case, just load the previous song and immediately start the player.
             loadSongAndPlay(--currentSongIndex);
-            try {
-                Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                GUI.getPlayButton().setIcon(new ImageIcon(icon));
-            } catch (IOException ex) {
-                System.out.println("icons/pause.png not found");
-            }
+            setP2P("pause");
         }
     }
 
@@ -172,21 +150,54 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void skip() throws Exception {
         if (currentSongIndex >= playlist.getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
-            try {
-                Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
-                GUI.getSkipButton().setIcon(new ImageIcon(icon));
-            } catch (IOException ex) {
-                System.out.println("icons/error.png not found");
-            }
+            setButtonIconToErrorImage("skip");
         } else { // In any other case, just load the next song and immediately start the player.
             loadSongAndPlay(++currentSongIndex);
-            try {
-                Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                GUI.getPlayButton().setIcon(new ImageIcon(icon));
-            } catch (IOException ex) {
-                System.out.println("icons/pause.png not found");
-            }            
+            setP2P("pause");
         }
+    }
+
+    /**
+     * A helper function to be used to change play to pause or pause to play. P2P can mean "PLAY TO PAUSE" or "PAUSE TO PLAY". The name sucks, but
+     * it was the best I could think of for this situation (there were a lot of variables to consider..).
+     * 
+     * @param buttonName    setIcon("pause") would change play to pause. setIcon("play") would change pause to play.
+     */
+    private void setP2P(String buttonName) {
+        Image icon;
+        String iconName;        // figure out the iconName to grab based on the buttonName
+
+        switch (buttonName) {
+            case "pause" : iconName = "pause";
+                           break;
+            case "play"  : iconName = "play";
+                           break;
+            default      : iconName = "NULL";
+        }
+        
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/" + iconName + ".png"));
+            if (buttonName == "pause" ||
+                buttonName == "play")  { GUI.getPlayButton().setIcon(new ImageIcon(icon)); }
+        } catch (IOException ex) {
+            System.out.println("icons/" + iconName + ".png not found.");
+        }
+    }
+    
+    /**
+     * To be used by skip() or back() when there is an error.
+     * 
+     * @param buttonName    setButtonIconToErrorImage("skip") would turn the skip icon into an error icon.
+     */
+    private void setButtonIconToErrorImage(String buttonName) throws IOException {
+        Image icon = ImageIO.read(View.class.getResource("icons/error.png"));        
+        if (buttonName == "back") {
+            GUI.getBackButton().setIcon(new ImageIcon(icon));
+        }
+        else if (buttonName == "skip") {
+            GUI.getSkipButton().setIcon(new ImageIcon(icon));
+        }
+        else { System.out.println("Button cannot be found."); }
     }
     
     /**
@@ -206,7 +217,7 @@ public class Controller implements ActionListener, ChangeListener {
             System.out.println("icons/next.png not found");
         }
     }
-    
+
     @Override
     public void stateChanged(ChangeEvent e) {
         if (player != null) {
