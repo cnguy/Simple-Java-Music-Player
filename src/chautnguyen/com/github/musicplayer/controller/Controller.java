@@ -129,7 +129,7 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void start() {
         player.start();
-        // the line below is to make sure the next song is muted if the slider's value = 0 from the previous song
+        // The line below makes sure the next song applies the same volume level as before.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
         GUI.setTitle(playlist.get(currentSongIndex));
     }

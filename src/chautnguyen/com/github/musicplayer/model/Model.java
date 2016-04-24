@@ -22,7 +22,7 @@ public class Model {
         String line = null;
         
         while ((line = br.readLine()) != null) {
-            playlist.add(line);
+            playlist.add(line);     // adds "music/______.___"
         }
         
         br.close();
