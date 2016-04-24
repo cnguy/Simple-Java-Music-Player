@@ -81,7 +81,7 @@ public class Controller implements ActionListener, ChangeListener {
         GUI.getPlayButton().addActionListener(this);
         GUI.getSkipButton().addActionListener(this);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         resetIcons();
@@ -125,7 +125,7 @@ public class Controller implements ActionListener, ChangeListener {
             }
         }
     }
-
+    
     /**
      * Starts the player to play the current song, and then sets the title of the music player to music/insertsongnamehere.wav.
      */
@@ -186,7 +186,7 @@ public class Controller implements ActionListener, ChangeListener {
             }            
         }
     }
-
+    
     /**
      * Resets the skip and back button icons. This is used in case one of the buttons have an error icon.
      */
@@ -204,15 +204,15 @@ public class Controller implements ActionListener, ChangeListener {
             System.out.println("icons/next.png not found");
         }
     }
-
+    
+    @Override
     public void stateChanged(ChangeEvent e) {
         if (player != null) {
             float sliderValue = (float)GUI.getVolumeSlider().getValue();
             // jmf keeps catching exceptions despite the fact that volumnLevel is always in [0, 1.0]
             // so instead of dividing sliderValue by 100.0 (so that every slider value corresponds with the appropriate float value (1 = .01)
             // I'm dividing it by 150 (as long as the resulting volumnLevel is not 1.0 or near it)..
-            float volumnLevel = sliderValue / 150.0f;                     
-            System.out.println(volumnLevel);
+            float volumnLevel = sliderValue / 150.0f;
             (player.getGainControl()).setLevel(volumnLevel);
         }
     }
