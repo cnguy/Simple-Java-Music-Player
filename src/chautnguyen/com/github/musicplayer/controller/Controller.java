@@ -129,7 +129,9 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void start() {
         player.start();
-        // The line below makes sure the next song applies the same volume level as before.
+        // The line below makes sure the song being played applies the current volume level of the slider.
+        // For example, if the current song is muted, and the user presses skip or back, THAT song should be muted as well, or else the slider would not make sense.
+        // This line is needed for that. Otherwise the next song coming up would always be played at the default volume.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
         GUI.setTitle(playlist.get(currentSongIndex));
     }
