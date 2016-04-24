@@ -17,8 +17,8 @@ import javax.swing.JSlider;
 
 public class View extends JFrame {
     private GridLayout grid = new GridLayout(2, 3);
-    public JButton backButton, playButton, skipButton;
-    public JSlider volumeSlider;
+    private JButton backButton, playButton, skipButton;
+    private JSlider volumeSlider;
     
     public View() {
         super("music player");
@@ -57,6 +57,10 @@ public class View extends JFrame {
         addIcon(skipButton, "icons/next.png");
         skipButton.getPreferredSize();
         
+        playButton = new JButton();
+        addIcon(playButton, "icons/play.png");
+        playButton.getPreferredSize();
+        
         volumeSlider = new JSlider();
         volumeSlider.getPreferredSize();
     }
@@ -68,5 +72,23 @@ public class View extends JFrame {
         } catch (IOException ex) {
             System.out.println(iconPath + " not found.");
         }
+    }
+    
+    // private JButton backButton, playButton, skipButton;
+    // private JSlider volumeSlider;
+    public JButton getBackButton() {
+        return backButton;
+    }
+    
+    public JButton getPlayButton() {
+        return playButton;
+    }
+    
+    public JButton getSkipButton() {
+        return skipButton;
+    }
+    
+    public JSlider getVolumeSlider() {
+        return volumeSlider;
     }
 }

@@ -12,11 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.media.GainControl;
+import javax.imageio.ImageIO;
 import javax.media.Control;
+import javax.media.GainControl;
 import javax.media.Player;
 import javax.media.Manager;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
@@ -45,7 +45,7 @@ public class Controller implements ActionListener, ChangeListener {
         playlist.loadSongs(file); // loads songs into playlist, an ArrayList
 
         // volume slider change listener
-        GUI.volumeSlider.addChangeListener(this);
+        GUI.getVolumeSlider().addChangeListener(this);
 
         // loads the first song
         currentSongIndex = 0;
@@ -77,16 +77,16 @@ public class Controller implements ActionListener, ChangeListener {
     }
 
     private void addActionListeners() {
-        GUI.backButton.addActionListener(this);
-        GUI.playButton.addActionListener(this);
-        GUI.skipButton.addActionListener(this);
+        GUI.getBackButton().addActionListener(this);
+        GUI.getPlayButton().addActionListener(this);
+        GUI.getSkipButton().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         resetIcons();
 
-        if ((((JButton) e.getSource()) == GUI.backButton)) {
+        if ((((JButton) e.getSource()) == GUI.getBackButton())) {
             try {
                 back();
             } catch (Exception ex) {
@@ -95,13 +95,13 @@ public class Controller implements ActionListener, ChangeListener {
         }
         // TODO: make it so the pause button becomes a play button
         // once the song is over
-        if ((((JButton) e.getSource()) == GUI.playButton)) {
+        if ((((JButton) e.getSource()) == GUI.getPlayButton())) {
             if (!isItPlaying) {
                 start();
                 isItPlaying = true;
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
+                    GUI.getPlayButton().setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/pause.png not found");
                 }
@@ -110,14 +110,14 @@ public class Controller implements ActionListener, ChangeListener {
                 isItPlaying = false; // fixed
                 try {
                     Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
-                    GUI.playButton.setIcon(new ImageIcon(icon));
+                    GUI.getPlayButton().setIcon(new ImageIcon(icon));
                 } catch (IOException ex) {
                     System.out.println("icons/play.png not found");
                 }
             }
         }
 
-        if ((((JButton) e.getSource()) == GUI.skipButton)) {
+        if ((((JButton) e.getSource()) == GUI.getSkipButton())) {
             try {
                 skip();
             } catch (Exception ex) {
@@ -150,7 +150,7 @@ public class Controller implements ActionListener, ChangeListener {
         if (currentSongIndex == 0) {    // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
-                GUI.backButton.setIcon(new ImageIcon(icon));
+                GUI.getBackButton().setIcon(new ImageIcon(icon));
             } catch (IOException ex) {
                 System.out.println("icons/error.png not found");
             }            
@@ -158,7 +158,7 @@ public class Controller implements ActionListener, ChangeListener {
             loadSongAndPlay(--currentSongIndex);
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                GUI.playButton.setIcon(new ImageIcon(icon));
+                GUI.getPlayButton().setIcon(new ImageIcon(icon));
             } catch (IOException ex) {
                 System.out.println("icons/pause.png not found");
             }
@@ -172,7 +172,7 @@ public class Controller implements ActionListener, ChangeListener {
         if (currentSongIndex >= playlist.getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
-                GUI.skipButton.setIcon(new ImageIcon(icon));
+                GUI.getSkipButton().setIcon(new ImageIcon(icon));
             } catch (IOException ex) {
                 System.out.println("icons/error.png not found");
             }
@@ -180,7 +180,7 @@ public class Controller implements ActionListener, ChangeListener {
             loadSongAndPlay(++currentSongIndex);
             try {
                 Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
-                GUI.playButton.setIcon(new ImageIcon(icon));
+                GUI.getPlayButton().setIcon(new ImageIcon(icon));
             } catch (IOException ex) {
                 System.out.println("icons/pause.png not found");
             }            
@@ -193,21 +193,23 @@ public class Controller implements ActionListener, ChangeListener {
     private void resetIcons() {
         try {
             Image icon = ImageIO.read(View.class.getResource("icons/prev.png"));            
-            GUI.backButton.setIcon(new ImageIcon(icon));            
+            GUI.getBackButton().setIcon(new ImageIcon(icon));            
         } catch (IOException ex) {
             System.out.println("icons/prev.png not found");
         }
         try {
             Image icon = ImageIO.read(View.class.getResource("icons/next.png"));
-            GUI.skipButton.setIcon(new ImageIcon(icon));
+            GUI.getSkipButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/next.png not found");
         }
     }
 
     public void stateChanged(ChangeEvent e) {
-        float sliderValue = (float)GUI.volumeSlider.getValue();
-        float volumnLevel = sliderValue / 100.0f;        
-        (player.getGainControl()).setLevel(volumnLevel);
+        if (player == null) {
+            float sliderValue = (float)GUI.getVolumeSlider().getValue();
+            float volumnLevel = sliderValue / 100.0f;        
+            (player.getGainControl()).setLevel(volumnLevel);
+        }
     }
 }
