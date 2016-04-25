@@ -158,36 +158,27 @@ public class Controller implements ActionListener, ChangeListener {
     }
 
     /**
-     * A helper function to be used to change play to pause or pause to play. P2P can mean "PLAY TO PAUSE" or "PAUSE TO PLAY". The name sucks, but
+     * A helper function that changes the play icon to the pause icon and vise versa. P2P is short for "PLAY TO PAUSE" or "PAUSE TO PLAY". The name sucks, but
      * it was the best I could think of for this situation (there were a lot of variables to consider..).
+     * Example: setP2P("pause") would change the (current) play icon to pause. setP2P("play") would change the (current) pause icon to play.
      * 
-     * @param buttonName    setIcon("pause") would change play to pause. setIcon("play") would change pause to play.
+     * @param nextIconToGrab    the name of the next icon to grab.
      */
-    private void setP2P(String buttonName) {
-        Image icon;
-        String iconName;        // figure out the iconName to grab based on the buttonName
-
-        switch (buttonName) {
-            case "pause" : iconName = "pause";
-                           break;
-            case "play"  : iconName = "play";
-                           break;
-            default      : iconName = "NULL";
-        }
-        
+    private void setP2P(String nextIconToGrab) {
+        Image icon;        
         try {
-            icon = ImageIO.read(View.class.getResource("icons/" + iconName + ".png"));
-            if (buttonName == "pause" ||
-                buttonName == "play")  { GUI.getPlayButton().setIcon(new ImageIcon(icon)); }
+            icon = ImageIO.read(View.class.getResource("icons/" + nextIconToGrab + ".png"));
+            GUI.getPlayButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
-            System.out.println("icons/" + iconName + ".png not found.");
+            System.out.println("icons/" + nextIconToGrab + ".png not found.");
         }
     }
     
     /**
      * To be used by skip() or back() when there is an error.
+     * Example: setButtonIconToErrorImage("skip") would turn the skip icon into an error icon.
      * 
-     * @param buttonName    setButtonIconToErrorImage("skip") would turn the skip icon into an error icon.
+     * @param buttonName    the (not full however) name of the button that will be modified.
      */
     private void setButtonIconToErrorImage(String buttonName) throws IOException {
         Image icon = ImageIO.read(View.class.getResource("icons/error.png"));        
