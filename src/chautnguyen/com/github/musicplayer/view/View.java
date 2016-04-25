@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 public class View extends JFrame {
-    private GridLayout grid = new GridLayout(2, 3);
+    private GridLayout grid = new GridLayout(0, 4);
     private JButton backButton, playButton, skipButton;
     private JSlider volumeSlider;
     
@@ -34,13 +34,13 @@ public class View extends JFrame {
     private void addComponentsToPane(final Container pane) {
         final JPanel panel = new JPanel();
         panel.setLayout(grid);        
-        panel.setPreferredSize(new Dimension(200, 100));
+        panel.setPreferredSize(new Dimension(300, 75));
 
         initializeComponents();
         
-        panel.add(backButton);
-        panel.add(skipButton);
+        panel.add(backButton);        
         panel.add(playButton);
+        panel.add(skipButton);
         panel.add(volumeSlider);
         
         pane.add(panel);
@@ -49,15 +49,15 @@ public class View extends JFrame {
     private void initializeComponents() {      
         backButton = new JButton();
         addIcon(backButton, "icons/prev.png");
-        backButton.getPreferredSize();               
-        
-        skipButton = new JButton();
-        addIcon(skipButton, "icons/next.png");
-        skipButton.getPreferredSize();
+        backButton.getPreferredSize();                               
         
         playButton = new JButton();
         addIcon(playButton, "icons/play.png");
         playButton.getPreferredSize();
+        
+        skipButton = new JButton();
+        addIcon(skipButton, "icons/next.png");
+        skipButton.getPreferredSize();
         
         volumeSlider = new JSlider();
         volumeSlider.getPreferredSize();
