@@ -5,5 +5,5 @@ Created using Swing and JMF.
 
 <h3>How to load a playlist..</h3></br>
 
-1. Within the "model" directory,create a "music" folder and place all the song files in there (Note: MP3's don't work with Java).</br>
+1. Within the "model" directory, create a "music" folder and place all the song files in there (Note: MP3's don't work with Java).</br>
 2. Within the "controller" directory, create a "playlists" folder. In there, create a "playlist1.txt" file. You can change the implementation so that it takes whatever file name you want.
