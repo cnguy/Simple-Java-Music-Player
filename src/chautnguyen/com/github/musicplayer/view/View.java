@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 public class View extends JFrame {
-    private GridLayout grid = new GridLayout(0, 4);
-    private JButton backButton, playButton, skipButton;
+    private GridLayout grid = new GridLayout(0, 6);
+    private JButton prevPlaylistButton, backButton, playButton, skipButton, nextPlaylistButton;
     private JSlider volumeSlider;
     
     public View() {
@@ -34,13 +34,15 @@ public class View extends JFrame {
     private void addComponentsToPane(final Container pane) {
         final JPanel panel = new JPanel();
         panel.setLayout(grid);        
-        panel.setPreferredSize(new Dimension(300, 75));
+        panel.setPreferredSize(new Dimension(500, 75));
 
         initializeComponents();
         
-        panel.add(backButton);        
+        panel.add(prevPlaylistButton);
+        panel.add(backButton);
         panel.add(playButton);
         panel.add(skipButton);
+        panel.add(nextPlaylistButton);
         panel.add(volumeSlider);
         
         pane.add(panel);
@@ -59,6 +61,9 @@ public class View extends JFrame {
         addIcon(skipButton, "icons/next.png");
         skipButton.getPreferredSize();
         
+        prevPlaylistButton = new JButton("PP");
+        nextPlaylistButton = new JButton("NP");        
+        
         volumeSlider = new JSlider();
         volumeSlider.getPreferredSize();
     }
@@ -72,6 +77,10 @@ public class View extends JFrame {
         }
     }
     
+    public JButton getPrevPlaylistButton() {
+        return prevPlaylistButton;
+    }
+    
     public JButton getBackButton() {
         return backButton;
     }
@@ -82,6 +91,10 @@ public class View extends JFrame {
     
     public JButton getSkipButton() {
         return skipButton;
+    }
+    
+    public JButton getNextPlaylistButton() {
+        return nextPlaylistButton;
     }
     
     public JSlider getVolumeSlider() {

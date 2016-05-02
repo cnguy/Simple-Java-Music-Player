@@ -23,7 +23,7 @@ public class PlaylistsContainer {
         return playlistsContainer.size();
     }
     
-    public void loadSongs(File file, int currentPlaylistIndex, int currentSongIndex) throws IOException {
+    public void loadSongs(File file, int currentPlaylistIndex) throws IOException {
         playlistsContainer.get(currentPlaylistIndex).loadSongs(file);
     }
     

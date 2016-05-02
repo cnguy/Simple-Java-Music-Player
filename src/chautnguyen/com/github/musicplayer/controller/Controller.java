@@ -40,12 +40,17 @@ public class Controller implements ActionListener, ChangeListener {
         addActionListeners();
 
         // retrieves the file
-        // TODO: TRY TO CLEAN THIS UP
+        // TODO: TRY TO CLEAN THIS UP               
+        URL path2 = Controller.class.getResource("playlists/playlist2.txt");
+        File file2 = new File(path2.getFile());
+        playlists.add(new Playlist());
+        playlists.loadSongs(file2, 0);
+        
         URL path = Controller.class.getResource("playlists/playlist1.txt");
         File file = new File(path.getFile());
         playlists.add(new Playlist());
-        playlists.loadSongs(file, currentPlaylistIndex, currentSongIndex); // loads songs into playlist, an ArrayList
-
+        playlists.loadSongs(file, 1); // loads songs into playlist, an ArrayList
+        
         // volume slider change listener
         GUI.getVolumeSlider().addChangeListener(this);
 
@@ -79,9 +84,11 @@ public class Controller implements ActionListener, ChangeListener {
     }
 
     private void addActionListeners() {
+        GUI.getPrevPlaylistButton().addActionListener(this);
         GUI.getBackButton().addActionListener(this);
         GUI.getPlayButton().addActionListener(this);
         GUI.getSkipButton().addActionListener(this);
+        GUI.getNextPlaylistButton().addActionListener(this);
     }
     
     /**
@@ -90,7 +97,15 @@ public class Controller implements ActionListener, ChangeListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         resetIcons(); // resets both the skip and back buttons
-
+        
+        if ((((JButton) e.getSource()) == GUI.getPrevPlaylistButton())) {
+            try {
+                prevPlaylist();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+        
         if ((((JButton) e.getSource()) == GUI.getBackButton())) {
             try {
                 back();
@@ -117,6 +132,14 @@ public class Controller implements ActionListener, ChangeListener {
                 System.out.println(ex);
             }
         }
+        
+        if ((((JButton) e.getSource()) == GUI.getNextPlaylistButton())) {
+            try {
+                nextPlaylist();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
     }
 
     /**
@@ -139,7 +162,16 @@ public class Controller implements ActionListener, ChangeListener {
         player.stop();
         isItPlaying = false;
     }
-
+    
+    private void prevPlaylist() throws Exception {
+        if (currentPlaylistIndex == 0) {
+            System.out.println("Cannot do that.");            
+        } else {
+            currentSongIndex = 0;
+            loadSongAndPlay(--currentPlaylistIndex, currentSongIndex);
+        }
+    }      
+    
     /**
      * Loads a song with the currentSongIndex (that was just decremented), if it exists, into the player.
      */
@@ -163,7 +195,15 @@ public class Controller implements ActionListener, ChangeListener {
             changePlayToPause();
         }
     }
-
+    
+    private void nextPlaylist() throws Exception {
+        if (currentPlaylistIndex == playlists.getNumberOfPlaylists() - 1) {
+            System.out.println("No more playlists to skip.");
+        } else {
+            currentSongIndex = 0;
+            loadSongAndPlay(++currentPlaylistIndex, currentSongIndex);
+        }
+    }
     /**
      * Changes the play icon to a pause icon.
      */
@@ -175,7 +215,7 @@ public class Controller implements ActionListener, ChangeListener {
         } catch (IOException ex) {
             System.out.println("icons/pause.png not found.");
         }
-    }
+    }       
     
     /**
      * Changes the pause icon to a play icon.
