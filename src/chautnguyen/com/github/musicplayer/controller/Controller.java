@@ -39,14 +39,13 @@ public class Controller implements ActionListener, ChangeListener {
 
         addActionListeners();
 
-        loadSongs("playlist1");
-        loadSongs("playlist2");
-        loadSongs("playlist1");
+        loadSongsIntoPlaylist("playlist1");
+        loadSongsIntoPlaylist("playlist2");
         
         // volume slider change listener
         GUI.getVolumeSlider().addChangeListener(this);
 
-        // loads the first song
+        // loads the first song of the first playlist
         currentPlaylistIndex = 0;
         currentSongIndex = 0;
         initializePlayer(currentPlaylistIndex, currentSongIndex);
@@ -58,7 +57,7 @@ public class Controller implements ActionListener, ChangeListener {
      * 
      * @param       The name of the playlist. Ex: playlist1.txt
      */
-    private void loadSongs(String playlistName) throws Exception {
+    private void loadSongsIntoPlaylist(String playlistName) throws Exception {
         URL path = Controller.class.getResource("playlists/" + playlistName + ".txt");
         File file = new File(path.getFile());
         playlists.add(new Playlist());
@@ -96,7 +95,7 @@ public class Controller implements ActionListener, ChangeListener {
     }
     
     /**
-     * Checks if a button is clicked.
+     * Checks if a button is clicked, and executes the appropriate method.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -274,6 +273,7 @@ public class Controller implements ActionListener, ChangeListener {
         } catch (IOException ex) {
             System.out.println("icons/prev.png not found");
         }
+        
         try {
             Image icon = ImageIO.read(View.class.getResource("icons/next.png"));
             GUI.getSkipButton().setIcon(new ImageIcon(icon));
