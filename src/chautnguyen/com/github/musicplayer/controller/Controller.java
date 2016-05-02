@@ -1,6 +1,7 @@
 package chautnguyen.com.github.musicplayer.controller;
 
-import chautnguyen.com.github.musicplayer.model.Model;
+import chautnguyen.com.github.musicplayer.model.Playlist;
+import chautnguyen.com.github.musicplayer.model.PlaylistsContainer;
 import chautnguyen.com.github.musicplayer.view.View;
 
 import java.awt.Color;
@@ -22,9 +23,10 @@ import javax.swing.event.ChangeListener;
 
 public class Controller implements ActionListener, ChangeListener {
     private Player player;
-    private Model playlist;
+    private PlaylistsContainer playlists;
     private View GUI;
-
+    
+    private int currentPlaylistIndex;
     private int currentSongIndex;
     private boolean isItPlaying;        // flag to change play icon to pause and vice versa
 
@@ -32,22 +34,25 @@ public class Controller implements ActionListener, ChangeListener {
      * Default constructor. Loads the first song in the playlist (on top of the multiple initializations of the class members).
      */
     public Controller() throws Exception {
-        this.playlist = new Model();
+        this.playlists = new PlaylistsContainer();
         this.GUI = new View();
 
         addActionListeners();
 
         // retrieves the file
+        // TODO: TRY TO CLEAN THIS UP
         URL path = Controller.class.getResource("playlists/playlist1.txt");
         File file = new File(path.getFile());
-        playlist.loadSongs(file); // loads songs into playlist, an ArrayList
+        playlists.add(new Playlist());
+        playlists.loadSongs(file, currentPlaylistIndex, currentSongIndex); // loads songs into playlist, an ArrayList
 
         // volume slider change listener
         GUI.getVolumeSlider().addChangeListener(this);
 
         // loads the first song
+        currentPlaylistIndex = 0;
         currentSongIndex = 0;
-        initializePlayer(currentSongIndex);
+        initializePlayer(currentPlaylistIndex, currentSongIndex);
         isItPlaying = false;
     }
 
@@ -56,8 +61,8 @@ public class Controller implements ActionListener, ChangeListener {
      * 
      * @param index     the index of the song (in the ArrayList) to be loaded.
      */
-    private void initializePlayer(int index) throws Exception {
-        File song = new File(Model.class.getResource(playlist.get(index)).getFile());
+    private void initializePlayer(int currentPlaylistIndex, int currentSongIndex) throws Exception {
+        File song = new File(Playlist.class.getResource(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex)).getFile());
         player = Manager.createRealizedPlayer(song.toURI().toURL());
     }
 
@@ -67,9 +72,9 @@ public class Controller implements ActionListener, ChangeListener {
      * 
      * @param index     the index of the song (in the ArrayList) to be loaded.
      */
-    private void loadSongAndPlay(int index) throws Exception {
+    private void loadSongAndPlay(int currentPlaylistIndex, int currentSongIndex) throws Exception {
         stopCurrentSong();
-        initializePlayer(index);
+        initializePlayer(currentPlaylistIndex, currentSongIndex);
         start();
     }
 
@@ -78,16 +83,19 @@ public class Controller implements ActionListener, ChangeListener {
         GUI.getPlayButton().addActionListener(this);
         GUI.getSkipButton().addActionListener(this);
     }
-
+    
+    /**
+     * Checks if a button is clicked.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        resetIcons();
+        resetIcons(); // resets both the skip and back buttons
 
         if ((((JButton) e.getSource()) == GUI.getBackButton())) {
             try {
                 back();
             } catch (Exception ex) {
-                System.out.println("error.png not found!");
+                System.out.println(ex);
             }
         }
         // TODO: make it so the pause button becomes a play button
@@ -106,7 +114,7 @@ public class Controller implements ActionListener, ChangeListener {
             try {
                 skip();
             } catch (Exception ex) {
-                System.out.println("error.png not found!");
+                System.out.println(ex);
             }
         }
     }
@@ -120,7 +128,7 @@ public class Controller implements ActionListener, ChangeListener {
         // For example, if the current song is muted, and the user presses skip or back, THAT song should be muted as well, or else the slider would not make sense.
         // This line is needed for that. Otherwise the next song coming up would always be played at the default volume.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
-        GUI.setTitle(playlist.get(currentSongIndex));
+        GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex));
         isItPlaying = true;
     }
 
@@ -139,7 +147,7 @@ public class Controller implements ActionListener, ChangeListener {
         if (currentSongIndex == 0) {    // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
             changeBackToError();
         } else {    // In any other case, just load the previous song and immediately start the player.
-            loadSongAndPlay(--currentSongIndex);
+            loadSongAndPlay(currentPlaylistIndex, --currentSongIndex);
             changePlayToPause();
         }
     }
@@ -148,10 +156,10 @@ public class Controller implements ActionListener, ChangeListener {
      * Loads a song with the currentSongIndex (that was just incremented), if it exists, into the player.
      */
     private void skip() throws Exception {
-        if (currentSongIndex >= playlist.getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
+        if (currentSongIndex >= playlists.getPlaylist(currentPlaylistIndex).getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
             changeSkipToError();
         } else { // In any other case, just load the next song and immediately start the player.
-            loadSongAndPlay(++currentSongIndex);
+            loadSongAndPlay(currentPlaylistIndex, ++currentSongIndex);
             changePlayToPause();
         }
     }
@@ -227,7 +235,10 @@ public class Controller implements ActionListener, ChangeListener {
             System.out.println("icons/next.png not found");
         }
     }
-
+    
+    /**
+     * Checks if the volume slider level is changed.
+     */
     @Override
     public void stateChanged(ChangeEvent e) {
         if (player != null) {
