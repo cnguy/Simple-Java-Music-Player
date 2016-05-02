@@ -39,8 +39,8 @@ public class Controller implements ActionListener, ChangeListener {
 
         addActionListeners();
 
-        loadSongsIntoPlaylist("playlist1");
-        loadSongsIntoPlaylist("playlist2");
+        loadSongsIntoPlaylist("anime_playlist1");
+        loadSongsIntoPlaylist("blackbear");
         
         // volume slider change listener
         GUI.getVolumeSlider().addChangeListener(this);
@@ -61,6 +61,7 @@ public class Controller implements ActionListener, ChangeListener {
         URL path = Controller.class.getResource("playlists/" + playlistName + ".txt");
         File file = new File(path.getFile());
         playlists.add(new Playlist());
+        // playlists.getNumberOfPlaylists() - 1 <= last index of the playlists ArrayList
         playlists.loadSongs(file, playlists.getNumberOfPlaylists() - 1);
     }
     
@@ -180,7 +181,8 @@ public class Controller implements ActionListener, ChangeListener {
      * Loads a song with the currentSongIndex (that was just decremented), if it exists, into the player.
      */
     private void back() throws Exception {
-        if (currentSongIndex == 0) {    // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
+        if (currentSongIndex == 0) {
+            // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
             changeBackToError();
         } else {    // In any other case, just load the previous song and immediately start the player.
             loadSongAndPlay(currentPlaylistIndex, --currentSongIndex);
@@ -192,7 +194,8 @@ public class Controller implements ActionListener, ChangeListener {
      * Loads a song with the currentSongIndex (that was just incremented), if it exists, into the player.
      */
     private void skip() throws Exception {
-        if (currentSongIndex >= playlists.getPlaylist(currentPlaylistIndex).getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
+        if (currentSongIndex >= playlists.getPlaylist(currentPlaylistIndex).getCount() - 1) {
+            // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
             changeSkipToError();
         } else { // In any other case, just load the next song and immediately start the player.
             loadSongAndPlay(currentPlaylistIndex, ++currentSongIndex);
