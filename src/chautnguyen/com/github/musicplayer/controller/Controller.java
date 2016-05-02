@@ -71,7 +71,6 @@ public class Controller implements ActionListener, ChangeListener {
         stopCurrentSong();
         initializePlayer(index);
         start();
-        isItPlaying = true;
     }
 
     private void addActionListeners() {
@@ -96,11 +95,9 @@ public class Controller implements ActionListener, ChangeListener {
         if ((((JButton) e.getSource()) == GUI.getPlayButton())) {
             if (!isItPlaying) {
                 start();
-                isItPlaying = true;
                 setP2P("pause");
             } else {
                 stopCurrentSong();
-                isItPlaying = false;
                 setP2P("play");
             }
         }
@@ -124,6 +121,7 @@ public class Controller implements ActionListener, ChangeListener {
         // This line is needed for that. Otherwise the next song coming up would always be played at the default volume.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
         GUI.setTitle(playlist.get(currentSongIndex));
+        isItPlaying = true;
     }
 
     /**
@@ -131,6 +129,7 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void stopCurrentSong() {
         player.stop();
+        isItPlaying = false;
     }
 
     /**
