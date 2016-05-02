@@ -39,17 +39,9 @@ public class Controller implements ActionListener, ChangeListener {
 
         addActionListeners();
 
-        // retrieves the file
-        // TODO: TRY TO CLEAN THIS UP               
-        URL path2 = Controller.class.getResource("playlists/playlist2.txt");
-        File file2 = new File(path2.getFile());
-        playlists.add(new Playlist());
-        playlists.loadSongs(file2, 0);
-        
-        URL path = Controller.class.getResource("playlists/playlist1.txt");
-        File file = new File(path.getFile());
-        playlists.add(new Playlist());
-        playlists.loadSongs(file, 1); // loads songs into playlist, an ArrayList
+        loadSongs("playlist1");
+        loadSongs("playlist2");
+        loadSongs("playlist1");
         
         // volume slider change listener
         GUI.getVolumeSlider().addChangeListener(this);
@@ -60,7 +52,19 @@ public class Controller implements ActionListener, ChangeListener {
         initializePlayer(currentPlaylistIndex, currentSongIndex);
         isItPlaying = false;
     }
-
+    
+    /**
+     * Adds a playlist, and loads the song names into that playlist.
+     * 
+     * @param       The name of the playlist. Ex: playlist1.txt
+     */
+    private void loadSongs(String playlistName) throws Exception {
+        URL path = Controller.class.getResource("playlists/" + playlistName + ".txt");
+        File file = new File(path.getFile());
+        playlists.add(new Playlist());
+        playlists.loadSongs(file, playlists.getNumberOfPlaylists() - 1);
+    }
+    
     /**
      * Loads a song into the player.
      * 
@@ -167,8 +171,9 @@ public class Controller implements ActionListener, ChangeListener {
         if (currentPlaylistIndex == 0) {
             System.out.println("Cannot do that.");            
         } else {
-            currentSongIndex = 0;
+            currentSongIndex = 0;    // reset song index
             loadSongAndPlay(--currentPlaylistIndex, currentSongIndex);
+            changePlayToPause();
         }
     }      
     
@@ -200,8 +205,9 @@ public class Controller implements ActionListener, ChangeListener {
         if (currentPlaylistIndex == playlists.getNumberOfPlaylists() - 1) {
             System.out.println("No more playlists to skip.");
         } else {
-            currentSongIndex = 0;
+            currentSongIndex = 0;   // reset song index
             loadSongAndPlay(++currentPlaylistIndex, currentSongIndex);
+            changePlayToPause();
         }
     }
     /**
