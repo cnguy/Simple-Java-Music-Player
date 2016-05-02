@@ -26,8 +26,4 @@ public class PlaylistsContainer {
     public void loadSongs(File file, int index) throws IOException {
         playlistsContainer.get(index).loadSongs(file);
     }
-    
-    public static void main(String[] args) {
-        PlaylistsContainer playlists = new PlaylistsContainer();
-    }
 }
