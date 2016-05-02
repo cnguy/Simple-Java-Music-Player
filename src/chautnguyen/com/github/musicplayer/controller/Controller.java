@@ -95,10 +95,10 @@ public class Controller implements ActionListener, ChangeListener {
         if ((((JButton) e.getSource()) == GUI.getPlayButton())) {
             if (!isItPlaying) {
                 start();
-                setP2P("pause");
+                changePlayToPause();
             } else {
                 stopCurrentSong();
-                setP2P("play");
+                changePauseToPlay();
             }
         }
 
@@ -137,10 +137,10 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void back() throws Exception {
         if (currentSongIndex == 0) {    // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
-            setButtonIconToErrorImage("back");
+            changeBackToError();
         } else {    // In any other case, just load the previous song and immediately start the player.
             loadSongAndPlay(--currentSongIndex);
-            setP2P("pause");
+            changePlayToPause();
         }
     }
 
@@ -149,46 +149,66 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void skip() throws Exception {
         if (currentSongIndex >= playlist.getCount() - 2) {      // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
-            setButtonIconToErrorImage("skip");
+            changeSkipToError();
         } else { // In any other case, just load the next song and immediately start the player.
             loadSongAndPlay(++currentSongIndex);
-            setP2P("pause");
+            changePlayToPause();
         }
     }
 
     /**
-     * A helper function that changes the play icon to the pause icon and vise versa. P2P is short for "PLAY TO PAUSE" or "PAUSE TO PLAY". The name sucks, but
-     * it was the best I could think of for this situation (there were a lot of variables to consider..).
-     * Example: setP2P("pause") would change the (current) play icon to pause. setP2P("play") would change the (current) pause icon to play.
-     * 
-     * @param nextIconToGrab    the name of the next icon to grab.
+     * Changes the play icon to a pause icon.
      */
-    private void setP2P(String nextIconToGrab) {
-        Image icon;        
+    private void changePlayToPause() {
+        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/" + nextIconToGrab + ".png"));
-            GUI.getPlayButton().setIcon(new ImageIcon(icon));
+            icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+            GUI.getPlayButton().setIcon(new ImageIcon(icon));           
         } catch (IOException ex) {
-            System.out.println("icons/" + nextIconToGrab + ".png not found.");
+            System.out.println("icons/pause.png not found.");
         }
     }
     
     /**
-     * To be used by skip() or back() when there is an error.
-     * Example: setButtonIconToErrorImage("skip") would turn the skip icon into an error icon.
-     * 
-     * @param buttonName    the (not full however) name of the button that will be modified.
+     * Changes the pause icon to a play icon.
      */
-    private void setButtonIconToErrorImage(String buttonName) throws IOException {
-        Image icon = ImageIO.read(View.class.getResource("icons/error.png"));        
-        if (buttonName == "back") {
+    private void changePauseToPlay() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/play.png"));
+            GUI.getPlayButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/play.png not found.");
+        }
+    }      
+    
+    /**
+     * Changes the back icon to an error icon. To be used when
+     * user tries to go back past the very first song.
+     */
+    private void changeBackToError() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getBackButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/back.png not found");
         }
-        else if (buttonName == "skip") {
-            GUI.getSkipButton().setIcon(new ImageIcon(icon));
-        }
-        else { System.out.println("Button cannot be found."); }
     }
+    
+    /**
+     * Changes the skip icon to an error icon. To be used when
+     * user tries to skip past the very last song.
+     */
+    private void changeSkipToError() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            GUI.getSkipButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/skip.png not found.");
+        }
+    }  
     
     /**
      * Resets the skip and back button icons. This is used in case one of the buttons have an error icon.
