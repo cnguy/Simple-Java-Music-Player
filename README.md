@@ -1,5 +1,5 @@
-# Simple-Java-MP3-Player
-Simple Java MP3 player created with Java, Swing, and JMF. I had a lot of fun creating this.</br>
+# Simple-Java-Music-Player
+Simple Java Music player created with Java, Swing, and JMF. I had a lot of fun creating this.</br>
 
 <b>How to setup the playlists for the music player to process and load..</b></br>
   1. Within the "../model" directory, create a "music" folder, create a folder and name it something easy since you'll be using it again. In that folder, create playlist subfolders, and place whatever song files you want in there.</br>Note: Java doesn't support MP3s, or at least JMF doesn't.. so I converted the MP3s to WAVs.).</br>In my case, I created two folders: <b>anime_playlist1</b> & <b>blackbear.</b></br>
