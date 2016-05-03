@@ -118,7 +118,7 @@ public class Controller implements ActionListener, ChangeListener {
             }
         }
         // TODO: make it so the pause button becomes a play button
-        // once the song is over
+        // once the song is over (when song completes, go to next)
         if ((((JButton) e.getSource()) == GUI.getPlayButton())) {
             if (!isItPlaying) {
                 start();
@@ -212,6 +212,7 @@ public class Controller implements ActionListener, ChangeListener {
             changePlayToPause();
         }
     }
+    
     /**
      * Changes the play icon to a pause icon.
      */
@@ -290,11 +291,9 @@ public class Controller implements ActionListener, ChangeListener {
      */
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (player != null) {
-            // jmf keeps catching exceptions despite the fact that volumnLevel is always in [0, 1.0]
-            // so instead of dividing sliderValue by 100.0 (so that every slider value corresponds with the appropriate float value (1 = .01)
-            // I'm dividing it by 150 (as long as the resulting volumnLevel is not 1.0 or near it)..
-            (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f); // gets slider value, converts it, and sets the level
-        }
+        // jmf keeps catching exceptions despite the fact that volumnLevel is always in [0, 1.0]
+        // so instead of dividing sliderValue by 100.0 (so that every slider value corresponds with the appropriate float value (1 = .01)
+        // I'm dividing it by 150 (can be whatever number as long as the resulting volumnLevel is not 1.0 or near it)..
+        (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
     }
 }
