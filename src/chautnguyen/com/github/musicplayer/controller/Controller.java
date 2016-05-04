@@ -102,7 +102,7 @@ public class Controller implements ActionListener, ChangeListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        resetIcons(); // resets both the skip and back buttons
+        resetIcons();
         
         if ((((JButton) e.getSource()) == GUI.getPrevPlaylistButton())) {
             try {
@@ -248,6 +248,20 @@ public class Controller implements ActionListener, ChangeListener {
     }      
     
     /**
+     * Changes the prevPlaylist icon to an error icon. To be used when
+     * user tries to go back past the very first playlist.
+     */
+    private void changePrevPlaylistToError() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            GUI.getPrevPlaylistButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/error.png not found.");
+        }
+    }
+    
+    /**
      * Changes the back icon to an error icon. To be used when
      * user tries to go back past the very first song.
      */
@@ -273,18 +287,12 @@ public class Controller implements ActionListener, ChangeListener {
         } catch (IOException ex) {
             System.out.println("icons/error.png not found.");
         }
-    }
+    }       
     
-    private void changePrevPlaylistToError() {
-        Image icon;
-        try {
-            icon = ImageIO.read(View.class.getResource("icons/error.png"));
-            GUI.getPrevPlaylistButton().setIcon(new ImageIcon(icon));
-        } catch (IOException ex) {
-            System.out.println("icons/error.png not found.");
-        }
-    }
-    
+    /**
+     * Changes the nextPlaylist icon to an error icon. To be used when
+     * user tries to go past the very last playlist.
+     */
     private void changeNextPlaylistToError() {
         Image icon;
         try {
@@ -296,7 +304,8 @@ public class Controller implements ActionListener, ChangeListener {
     }
     
     /**
-     * Resets the skip and back button icons. This is used in case one of the buttons have an error icon.
+     * Resets the prevPlaylist, skip, back, and nextPlaylist, button icons.
+     * This is used when one of the buttons have an error icon.
      */
     private void resetIcons() {
         try {
