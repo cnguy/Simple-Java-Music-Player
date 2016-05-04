@@ -6,9 +6,10 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Playlist {
-    private ArrayList<String> playlist;
+    private List<String> playlist;
 
     public Playlist() {
         playlist = new ArrayList<String>();

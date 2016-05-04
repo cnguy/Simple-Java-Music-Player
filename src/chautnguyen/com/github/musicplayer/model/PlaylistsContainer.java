@@ -3,9 +3,10 @@ package chautnguyen.com.github.musicplayer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistsContainer {
-    private ArrayList<Playlist> playlistsContainer;
+    private List<Playlist> playlistsContainer;
     
     public PlaylistsContainer() {
         playlistsContainer = new ArrayList<Playlist>(); 
