@@ -61,21 +61,19 @@ public class Controller implements ActionListener, ChangeListener {
         URL path = Controller.class.getResource("playlists/" + playlistName + ".txt");
         File file = new File(path.getFile());
         playlists.add(new Playlist());
-        // playlists.getNumberOfPlaylists() - 1 <= last index of the playlists ArrayList
+        // right parameter <= index of the song that was just added
         playlists.loadSongs(file, playlists.getNumberOfPlaylists() - 1);
     }
     
     /**
-     * Loads a song into the player.
+     * Loads a song file into the player.
      * 
-     * @param index     the index of the song (in the ArrayList) to be loaded.
+     * @param currentPlaylistIndex    the index of the playlist (in playlistsContainer) to be loaded.
+     * @param currentSongIndex        the index of the song (in playlist) to be loaded.
      */
     private void initializePlayer(int currentPlaylistIndex, int currentSongIndex) throws Exception {
-        //File song = new File(Playlist.class.getResource(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex)).getFile());
-
-        //player = Manager.createRealizedPlayer(song.toURI().toURL());
         player = Manager.createRealizedPlayer(
-                        (playlists.getPlaylist(currentPlaylistIndex).getSong(currentSongIndex).getFile()).toURI().toURL()
+                        (playlists.getSong(currentPlaylistIndex, currentSongIndex)).toURI().toURL()
                         );
     }
 
@@ -159,8 +157,7 @@ public class Controller implements ActionListener, ChangeListener {
         // For example, if the current song is muted, and the user presses skip or back, THAT song should be muted as well, or else the slider would not make sense.
         // This line is needed for that. Otherwise the next song coming up would always be played at the default volume.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
-        GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex).getFile().getName());
-        //GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex));
+        GUI.setTitle(playlists.getSong(currentPlaylistIndex, currentSongIndex).getName());
         isItPlaying = true;
     }
 
@@ -172,9 +169,13 @@ public class Controller implements ActionListener, ChangeListener {
         isItPlaying = false;
     }
     
+    /**
+     * Loads the first song of the previous playlist.
+     */
     private void prevPlaylist() throws Exception {
         if (currentPlaylistIndex == 0) {
-            System.out.println("Cannot do that.");            
+            GUI.getPrevPlaylistButton().setText(null);
+            changePrevPlaylistToError(); // display error on prevPlaylistButton         
         } else {
             currentSongIndex = 0;    // reset song index
             loadSongAndPlay(--currentPlaylistIndex, currentSongIndex);
@@ -187,7 +188,6 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void back() throws Exception {
         if (currentSongIndex == 0) {
-            // Change button to display error symbol if user tries to press the back button when it's not possible to go back any further.
             changeBackToError();
         } else {    // In any other case, just load the previous song and immediately start the player.
             loadSongAndPlay(currentPlaylistIndex, --currentSongIndex);
@@ -200,17 +200,20 @@ public class Controller implements ActionListener, ChangeListener {
      */
     private void skip() throws Exception {
         if (currentSongIndex >= playlists.getPlaylist(currentPlaylistIndex).getCount() - 1) {
-            // Change button to display error symbol if user tries to press the skip button when it's not possible to go any further.
-            changeSkipToError();
+            changeSkipToError();            
         } else { // In any other case, just load the next song and immediately start the player.
             loadSongAndPlay(currentPlaylistIndex, ++currentSongIndex);
             changePlayToPause();
         }
     }
     
+    /**
+     * Loads the first song of the next playlist.
+     */
     private void nextPlaylist() throws Exception {
         if (currentPlaylistIndex == playlists.getNumberOfPlaylists() - 1) {
-            System.out.println("No more playlists to skip.");
+            GUI.getNextPlaylistButton().setText(null);
+            changeNextPlaylistToError(); // display error on nextPlaylistButton
         } else {
             currentSongIndex = 0;   // reset song index
             loadSongAndPlay(++currentPlaylistIndex, currentSongIndex);
@@ -254,7 +257,7 @@ public class Controller implements ActionListener, ChangeListener {
             icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getBackButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
-            System.out.println("icons/back.png not found");
+            System.out.println("icons/error.png not found");
         }
     }
     
@@ -268,9 +271,29 @@ public class Controller implements ActionListener, ChangeListener {
             icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getSkipButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
-            System.out.println("icons/skip.png not found.");
+            System.out.println("icons/error.png not found.");
         }
-    }  
+    }
+    
+    private void changePrevPlaylistToError() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            GUI.getPrevPlaylistButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/error.png not found.");
+        }
+    }
+    
+    private void changeNextPlaylistToError() {
+        Image icon;
+        try {
+            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            GUI.getNextPlaylistButton().setIcon(new ImageIcon(icon));
+        } catch (IOException ex) {
+            System.out.println("icons/error.png not found.");
+        }
+    }
     
     /**
      * Resets the skip and back button icons. This is used in case one of the buttons have an error icon.
@@ -289,6 +312,12 @@ public class Controller implements ActionListener, ChangeListener {
         } catch (IOException ex) {
             System.out.println("icons/next.png not found");
         }
+        
+        GUI.getPrevPlaylistButton().setIcon(null);
+        GUI.getPrevPlaylistButton().setText("PP");
+        
+        GUI.getNextPlaylistButton().setIcon(null);
+        GUI.getNextPlaylistButton().setText("NP");
     }
     
     /**

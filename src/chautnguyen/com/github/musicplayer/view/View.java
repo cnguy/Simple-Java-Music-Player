@@ -48,7 +48,9 @@ public class View extends JFrame {
         pane.add(panel);
     }
         
-    private void initializeComponents() {      
+    private void initializeComponents() {
+        // any way to do this in a cleaner fashion? TODO
+        
         backButton = new JButton();
         addIcon(backButton, "icons/prev.png");
         backButton.getPreferredSize();                               
@@ -62,7 +64,10 @@ public class View extends JFrame {
         skipButton.getPreferredSize();
         
         prevPlaylistButton = new JButton("PP");
-        nextPlaylistButton = new JButton("NP");        
+        prevPlaylistButton.getPreferredSize();
+        
+        nextPlaylistButton = new JButton("NP");
+        nextPlaylistButton.getPreferredSize();
         
         volumeSlider = new JSlider();
         volumeSlider.getPreferredSize();
