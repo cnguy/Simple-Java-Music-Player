@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playlist {
-    private List<String> playlist;
-
+    private List<Song> playlist;
+    
     public Playlist() {
-        playlist = new ArrayList<String>();
+        playlist = new ArrayList<Song>();
     }
     
     public void loadSongs(File fin) throws IOException {
@@ -23,7 +23,7 @@ public class Playlist {
         String line = null;
         
         while ((line = br.readLine()) != null) {
-            playlist.add(line);     // adds "music/______.___"
+            playlist.add(new Song(line));
         }
         
         br.close();
@@ -35,8 +35,12 @@ public class Playlist {
      * @param index     the index of the song within the ArrayList.
      * @return          returns the file path.
      */
-    public String get(int index) {
+    public Song get(int index) {
         return playlist.get(index);
+    }
+    
+    public Song getSong(int currentSongIndex) {
+        return playlist.get(currentSongIndex);
     }
     
     /**

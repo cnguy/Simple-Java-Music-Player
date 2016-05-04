@@ -71,8 +71,12 @@ public class Controller implements ActionListener, ChangeListener {
      * @param index     the index of the song (in the ArrayList) to be loaded.
      */
     private void initializePlayer(int currentPlaylistIndex, int currentSongIndex) throws Exception {
-        File song = new File(Playlist.class.getResource(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex)).getFile());
-        player = Manager.createRealizedPlayer(song.toURI().toURL());
+        //File song = new File(Playlist.class.getResource(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex)).getFile());
+
+        //player = Manager.createRealizedPlayer(song.toURI().toURL());
+        player = Manager.createRealizedPlayer(
+                        (playlists.getPlaylist(currentPlaylistIndex).getSong(currentSongIndex).getFile()).toURI().toURL()
+                        );
     }
 
     /**
@@ -155,7 +159,8 @@ public class Controller implements ActionListener, ChangeListener {
         // For example, if the current song is muted, and the user presses skip or back, THAT song should be muted as well, or else the slider would not make sense.
         // This line is needed for that. Otherwise the next song coming up would always be played at the default volume.
         (player.getGainControl()).setLevel((float)GUI.getVolumeSlider().getValue() / 150.0f);
-        GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex));
+        GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex).getFile().getName());
+        //GUI.setTitle(playlists.getPlaylist(currentPlaylistIndex).get(currentSongIndex));
         isItPlaying = true;
     }
 
