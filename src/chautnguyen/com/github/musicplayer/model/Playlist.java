@@ -12,7 +12,7 @@ public class Playlist {
     private List<Song> playlist;
     
     public Playlist() {
-        playlist = new ArrayList<Song>();
+        playlist = new ArrayList<>();
     }
     
     /**

@@ -9,7 +9,7 @@ public class PlaylistsContainer {
     private List<Playlist> playlistsContainer;
     
     public PlaylistsContainer() {
-        playlistsContainer = new ArrayList<Playlist>(); 
+        playlistsContainer = new ArrayList<>(); 
     }
     
     /**
