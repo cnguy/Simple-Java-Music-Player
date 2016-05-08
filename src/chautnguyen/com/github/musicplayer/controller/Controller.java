@@ -4,7 +4,6 @@ import chautnguyen.com.github.musicplayer.model.Playlist;
 import chautnguyen.com.github.musicplayer.model.PlaylistsContainer;
 import chautnguyen.com.github.musicplayer.view.View;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.media.GainControl;
 import javax.media.Player;
 import javax.media.Manager;
 import javax.swing.ImageIcon;
@@ -199,7 +197,7 @@ public class Controller implements ActionListener, ChangeListener {
      * Loads a song with the currentSongIndex (that was just incremented), if it exists, into the player.
      */
     private void skip() throws Exception {
-        if (currentSongIndex >= playlists.getPlaylist(currentPlaylistIndex).getCount() - 1) {
+        if (currentSongIndex == playlists.getPlaylist(currentPlaylistIndex).getCount() - 1) {
             changeSkipToError();            
         } else { // In any other case, just load the next song and immediately start the player.
             loadSongAndPlay(currentPlaylistIndex, ++currentSongIndex);
@@ -225,9 +223,8 @@ public class Controller implements ActionListener, ChangeListener {
      * Changes the play icon to a pause icon.
      */
     private void changePlayToPause() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/pause.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/pause.png"));
             GUI.getPlayButton().setIcon(new ImageIcon(icon));           
         } catch (IOException ex) {
             System.out.println("icons/pause.png not found.");
@@ -238,9 +235,8 @@ public class Controller implements ActionListener, ChangeListener {
      * Changes the pause icon to a play icon.
      */
     private void changePauseToPlay() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/play.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/play.png"));
             GUI.getPlayButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/play.png not found.");
@@ -252,9 +248,8 @@ public class Controller implements ActionListener, ChangeListener {
      * user tries to go back past the very first playlist.
      */
     private void changePrevPlaylistToError() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getPrevPlaylistButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/error.png not found.");
@@ -266,9 +261,8 @@ public class Controller implements ActionListener, ChangeListener {
      * user tries to go back past the very first song.
      */
     private void changeBackToError() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getBackButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/error.png not found");
@@ -280,9 +274,8 @@ public class Controller implements ActionListener, ChangeListener {
      * user tries to skip past the very last song.
      */
     private void changeSkipToError() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getSkipButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/error.png not found.");
@@ -294,9 +287,8 @@ public class Controller implements ActionListener, ChangeListener {
      * user tries to go past the very last playlist.
      */
     private void changeNextPlaylistToError() {
-        Image icon;
         try {
-            icon = ImageIO.read(View.class.getResource("icons/error.png"));
+            Image icon = ImageIO.read(View.class.getResource("icons/error.png"));
             GUI.getNextPlaylistButton().setIcon(new ImageIcon(icon));
         } catch (IOException ex) {
             System.out.println("icons/error.png not found.");
