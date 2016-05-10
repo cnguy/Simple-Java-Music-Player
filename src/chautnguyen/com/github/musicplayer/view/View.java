@@ -14,12 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 public class View extends JFrame {
-    private GridLayout grid = new GridLayout(0, 6);
+    private final GridLayout grid;
     private JButton prevPlaylistButton, backButton, playButton, skipButton, nextPlaylistButton;
     private JSlider volumeSlider;
     
     public View() {
         super("music player");
+        grid = new GridLayout(0, 6);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addComponentsToPane(getContentPane());
         pack();
@@ -51,24 +53,21 @@ public class View extends JFrame {
         // any way to do this in a cleaner fashion? TODO
         
         backButton = new JButton();
-        addIcon(backButton, "icons/prev.png");
-        backButton.getPreferredSize();                               
-        
         playButton = new JButton();
-        addIcon(playButton, "icons/play.png");
-        playButton.getPreferredSize();
-        
         skipButton = new JButton();
-        addIcon(skipButton, "icons/next.png");
-        skipButton.getPreferredSize();
-        
         prevPlaylistButton = new JButton("PP");
-        prevPlaylistButton.getPreferredSize();
-        
         nextPlaylistButton = new JButton("NP");
-        nextPlaylistButton.getPreferredSize();
-        
         volumeSlider = new JSlider();
+
+        addIcon(backButton, "icons/prev.png");
+        addIcon(playButton, "icons/play.png");
+        addIcon(skipButton, "icons/next.png");
+
+        backButton.getPreferredSize();
+        playButton.getPreferredSize();
+        skipButton.getPreferredSize();
+        prevPlaylistButton.getPreferredSize();
+        nextPlaylistButton.getPreferredSize();
         volumeSlider.getPreferredSize();
     }
     
