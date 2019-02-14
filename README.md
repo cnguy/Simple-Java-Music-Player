@@ -10,26 +10,16 @@ Simple Java Music player created with Java, Swing, and JMF. I had a lot of fun c
     <b>anime_openings.txt</b></br>
         ```
         music/anime_playlist1/BnHA_op1.wav
-        ```</br>
-        ```
         music/anime_playlist1/G_S2_ed3.wav
-        ```</br>
-        ```
         music/anime_playlist1/G_S2_ed5.wav
-        ```</br>
-        ```
         music/anime_playlist1/G_S2_op2.wav
-        ```</br>
-        ```
         music/anime_playlist1/G_S2_op4.wav
-        ```</br>
+        ```
     <b>blackbear.txt</b></br>
       ```
         music/blackbear/bb_nyla.wav
-      ```</br>
-      ```
         music/blackbear/bb_90210.wav
-      ```</br>
+      ```
   3. Change the implementation within the Controller.java class so that it has the correct names (without the .txt extension).</br>
     ```
     42: loadSongsIntoPlaylist("anime_playlist1");
