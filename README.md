@@ -8,6 +8,7 @@ Simple Java Music player created with Java, Swing, and JMF. I had a lot of fun c
     2. To register a song to a playlist, go into the appropriate playlist text file, and type on the first line "music/insert_corresponding_folder_name/song_name.wav". If you want to register more songs, just add a new line and repeat it. Because of the way the program is coded, you could type in duplicate addresses to get multiple songs so keep that in mind.
     </br> Examples below!</br>
     <b>anime_openings.txt</b></br>
+    
         ```
         music/anime_playlist1/BnHA_op1.wav
         music/anime_playlist1/G_S2_ed3.wav
@@ -15,11 +16,15 @@ Simple Java Music player created with Java, Swing, and JMF. I had a lot of fun c
         music/anime_playlist1/G_S2_op2.wav
         music/anime_playlist1/G_S2_op4.wav
         ```
+        
     <b>blackbear.txt</b></br>
+    
       ```
         music/blackbear/bb_nyla.wav
         music/blackbear/bb_90210.wav
       ```
+      
+      
   3. Change the implementation within the Controller.java class so that it has the correct names (without the .txt extension).</br>
     ```
     42: loadSongsIntoPlaylist("anime_playlist1");
