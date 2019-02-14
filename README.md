@@ -16,13 +16,12 @@ Simple Java Music player created with Java, Swing, and JMF. I had a lot of fun c
         music/anime_playlist1/G_S2_op2.wav
         music/anime_playlist1/G_S2_op4.wav
         ```
-        
-    <b>blackbear.txt</b></br>
+        <b>blackbear.txt</b></br>
     
-      ```
+      ````
         music/blackbear/bb_nyla.wav
         music/blackbear/bb_90210.wav
-      ```
+      ````
       
       
   3. Change the implementation within the Controller.java class so that it has the correct names (without the .txt extension).</br>
